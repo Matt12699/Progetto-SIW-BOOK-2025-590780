@@ -1,0 +1,217 @@
+/* ==========================================
+   HOMEPAGE SPECIFIC STYLES
+   ========================================== */
+
+/* ==========================================
+   HERO SECTION
+   ========================================== */
+.hero {
+    min-height: 80vh;
+    background: linear-gradient(135deg, var(--primary-brown) 0%, var(--secondary-brown) 50%, var(--accent-gold) 100%);
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="rgba(255,255,255,.1)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></radialGradient></defs><rect width="11" height="11" x="10" y="10" ry="2" fill="url(%23a)"/></svg>') repeat;
+    opacity: 0.3;
+    animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateX(0px) translateY(0px); }
+    33% { transform: translateX(30px) translateY(-30px); }
+    66% { transform: translateX(-20px) translateY(20px); }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+    animation: slideInUp 0.8s ease-out;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    letter-spacing: -0.04em; 
+    line-height: 1.1;
+}
+
+.hero p {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--parchment);
+    margin-bottom: 2rem;
+    animation: slideInUp 0.8s ease-out 0.2s both;
+    letter-spacing: -0.01em;
+    line-height: 1.5;
+}
+
+.hero .btn-primary {
+    animation: slideInUp 0.8s ease-out 0.4s both;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   FEATURES SECTION
+   ========================================== */
+.features {
+    padding: 5rem 0;
+    background: var(--cream);
+}
+
+.feature-card {
+    background: var(--cream);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(44,24,16,0.08);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(212,175,55,0.1);
+    margin-bottom: 2rem;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(44,24,16,0.12);
+    border-color: var(--accent-gold);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    color: var(--primary-brown);
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1) rotateY(180deg);
+    color: var(--accent-gold);
+}
+
+.feature-card h3 {
+    color: var(--dark-brown);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+.feature-card p {
+    color: var(--gray);
+    line-height: 1.6;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+}
+
+/* ==========================================
+   CAROUSEL SECTION
+   ========================================== */
+.carousel-section {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, var(--parchment) 0%, var(--cream) 100%);
+}
+
+.carousel-item img {
+    height: 400px;
+    object-fit: cover;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+
+.carousel-item:hover img {
+    transform: scale(1.02);
+}
+
+.carousel-caption {
+    background: rgba(139,69,19,0.9);
+    border-radius: 15px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+/* ==========================================
+   STATS SECTION
+   ========================================== */
+.stats {
+    padding: 4rem 0;
+    background: var(--primary-brown);
+    color: var(--cream);
+}
+
+.stat-item {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    display: block;
+    animation: countUp 2s ease-out;
+    color: var(--accent-gold);
+}
+
+.stat-label {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+@keyframes countUp {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* ==========================================
+   RESPONSIVE - HOMEPAGE SPECIFIC
+   ========================================== */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero p {
+        font-size: 1.1rem;
+    }
+    
+    .feature-card {
+        margin-bottom: 2rem;
+        padding: 2rem 1.5rem;
+    }
+    
+    .feature-icon {
+        font-size: 2.5rem;
+    }
+    
+    .carousel-item img {
+        height: 300px;
+    }
+    
+    .carousel-caption {
+        padding: 1.5rem;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+}

@@ -1,0 +1,380 @@
+/* ==========================================
+   FORM STYLES - Per login e registrazione
+   ========================================== */
+
+/* Layout del body per le pagine form */
+body.form-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ==========================================
+   BRAND LOGO NELLE PAGINE FORM
+   ========================================== */
+.brand-logo {
+    margin-bottom: 3rem;
+    text-decoration: none;
+    color: var(--primary-brown);
+    transition: transform 0.3s ease;
+}
+
+.brand-logo:hover {
+    transform: scale(1.05);
+    color: var(--accent-gold);
+}
+
+.brand-logo i {
+    font-size: 3rem;
+    margin-right: 1rem;
+    color: var(--accent-gold);
+}
+
+.brand-logo .brand-text {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+}
+
+/* ==========================================
+   FORM CONTAINER
+   ========================================== */
+.form-container {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 20px 60px rgba(44,24,16,0.1);
+    border: 1px solid rgba(212,175,55,0.1);
+    max-width: 450px;
+    width: 100%;
+    margin: 0 1rem;
+}
+
+.form-title {
+    color: var(--dark-brown);
+    font-weight: 700;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+}
+
+/* ==========================================
+   FORM INPUTS E LABELS
+   ========================================== */
+.form-label {
+    color: var(--primary-brown);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+}
+
+.custom-input {
+    background: var(--cream);
+    border: 2px solid rgba(212,175,55,0.2);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    color: var(--dark-brown);
+    width: 100%;
+}
+
+.custom-input:focus {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 0.2rem rgba(255,111,0,0.25);
+    background: var(--white);
+    outline: none;
+}
+
+.custom-input::placeholder {
+    color: rgba(109,76,65,0.5);
+}
+
+/* Input con errore */
+.custom-input.is-invalid {
+    border-color: var(--deep-red);
+}
+
+.custom-input.is-invalid:focus {
+    border-color: var(--deep-red);
+    box-shadow: 0 0 0 0.2rem rgba(211,47,47,0.25);
+}
+
+/* ==========================================
+   PASSWORD TOGGLE FUNCTIONALITY
+   ========================================== */
+.password-field {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 1rem;
+    top: 70%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    background: var(--primary-brown);
+    border-radius: 50%;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.eye-icon:hover {
+    background: var(--accent-gold);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.eye-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* ==========================================
+   FORM BUTTONS
+   ========================================== */
+.form-btn {
+    background: linear-gradient(135deg, var(--primary-brown) 0%, var(--secondary-brown) 100%);
+    color: var(--cream);
+    border: 2px solid var(--accent-gold);
+    padding: 1rem 2rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    width: 100%;
+    transition: all 0.3s ease;
+    margin-top: 1.5rem;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+}
+
+.form-btn:hover {
+    background: var(--accent-gold);
+    color: var(--primary-brown);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(255,111,0,0.3);
+}
+
+.form-btn:active {
+    transform: translateY(0);
+}
+
+.form-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.form-btn:disabled:hover {
+    background: linear-gradient(135deg, var(--primary-brown) 0%, var(--secondary-brown) 100%);
+    color: var(--cream);
+    transform: none;
+    box-shadow: none;
+}
+
+/* ==========================================
+   FORM LINKS
+   ========================================== */
+.form-link {
+    color: var(--primary-brown);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    letter-spacing: -0.01em;
+}
+
+.form-link:hover {
+    color: var(--accent-gold);
+    text-decoration: underline;
+}
+
+.form-text {
+    color: var(--gray);
+    font-size: 0.95rem;
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+/* ==========================================
+   FORM ALERTS E MESSAGGI
+   ========================================== */
+.custom-alert {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(76,175,80,0.3);
+    z-index: 1000;
+    animation: slideInRight 0.5s ease-out;
+}
+
+.custom-alert.alert-error {
+    background: linear-gradient(135deg, var(--deep-red), #b71c1c);
+}
+
+.custom-alert .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.error {
+           color: #d32f2f;
+           font-size: 0.875rem;
+           margin-top: 0.5rem;
+           text-align: center;
+           font-weight: 500;
+           display: block;
+       }
+
+/* Override delle classi Bootstrap per gli alert */
+.alert-danger {
+    background: linear-gradient(135deg, var(--deep-red), #b71c1c);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #FF9800, #F57C00);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ==========================================
+   FORM VALIDATION MESSAGES
+   ========================================== */
+.invalid-feedback {
+    color: var(--deep-red);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    display: block;
+}
+
+.valid-feedback {
+    color: #4CAF50;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    display: block;
+}
+
+/* ==========================================
+   CHECKBOX E RADIO PERSONALIZZATI
+   ========================================== */
+.form-check-input {
+    background-color: var(--cream);
+    border: 2px solid rgba(212,175,55,0.3);
+    border-radius: 6px;
+}
+
+.form-check-input:checked {
+    background-color: var(--accent-gold);
+    border-color: var(--accent-gold);
+}
+
+.form-check-input:focus {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 0.2rem rgba(255,111,0,0.25);
+}
+
+.form-check-label {
+    color: var(--primary-brown);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+@media (max-width: 768px) {
+    .brand-logo i {
+        font-size: 2.5rem;
+        margin-right: 0.75rem;
+    }
+    
+    .brand-logo .brand-text {
+        font-size: 2rem;
+    }
+    
+    .form-container {
+        padding: 2rem;
+        margin: 0 1rem;
+    }
+    
+    .form-title {
+        font-size: 1.75rem;
+    }
+    
+    .custom-alert {
+        top: 1rem;
+        right: 1rem;
+        left: 1rem;
+        width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand-logo {
+        margin-bottom: 2rem;
+    }
+    
+    .brand-logo i {
+        font-size: 2rem;
+        margin-right: 0.5rem;
+    }
+    
+    .brand-logo .brand-text {
+        font-size: 1.75rem;
+    }
+    
+    .form-container {
+        padding: 1.5rem;
+    }
+    
+    .form-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .custom-input {
+        padding: 0.875rem 1.25rem;
+    }
+    
+    .form-btn {
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+    }
+}

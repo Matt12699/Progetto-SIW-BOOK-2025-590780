@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Log in to SiwBooks - SiwBooks, online Library</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/form.css" />
+</head>
+
+<body class="form-page">
+
+    <!--Bootstrap bundle JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+        crossorigin="anonymous"></script>
+
+    <!--Our JS-->
+    <script>
+        function togglePassword() {
+            const input = document.getElementById("passwordInput");
+            const icon = document.getElementById("eyeIcon");
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.innerHTML = `
+                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                    <line x1="4" y1="4" x2="20" y2="20" stroke="white" stroke-width="2"/>
+                `;
+            } else {
+                input.type = "password";
+                icon.innerHTML = `
+                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                `;
+            }
+        }
+    </script>
+
+    <!--Registration successful alert-->
+    <div id="custom-alert" class="custom-alert" role="alert" th:if="${registered}">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 6.627 5.373 12 12 12s12-5.373 12-12C24 5.373 18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10zm-2-6l-4-4 1.414-1.414L10 13.172l6.293-6.293 1.414 1.414L10 16z" />
+        </svg>
+        <span>Registrazione completata con successo!</span>
+    </div>
+
+    <!-- Brand Logo -->
+    <a class="brand-logo d-flex align-items-center text-decoration-none" href="/">
+        <i class="fas fa-book-open"></i>
+        <span class="brand-text">SiwBooks</span>
+    </a>
+
+    <!-- Main Content -->
+    <div class="form-container">
+        <h1 class="form-title text-center">Log in to SiwBooks</h1>
+
+        <!-- Error message -->
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
+        </div>
+
+        <form th:action="@{/login}" method="POST">
+            <!-- Username field -->
+            <div class="form-group mb-3">
+                <label for="usernameInput" class="form-label">Username</label>
+                <input required type="text" class="form-control custom-input" name="username" id="usernameInput"
+                    placeholder="MarioRossi24">
+            </div>
+
+            <!-- Password field -->
+            <div class="mb-3 password-field">
+                <label for="passwordInput" class="form-label">Password</label>
+                <input required type="password" class="form-control custom-input" name="password" id="passwordInput"
+                    placeholder="••••••••">
+                <span class="eye-icon" onclick="togglePassword()">
+                    <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                        stroke="white" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
+                        <circle cx="12" cy="12" r="3" />
+                    </svg>
+                </span>
+            </div>
+
+            <!-- Login error message -->
+            <div th:if="${param.error != null}" class="invalid-feedback d-block error">
+                Username or password are wrong
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit" class="form-btn">Log in</button>
+        </form>
+
+        <!-- Registration link -->
+        <p class="form-text">
+            Don't have an account? <a href="/register" class="form-link">Sign up here</a>
+        </p>
+    </div>
+
+</body>
+
+</html>

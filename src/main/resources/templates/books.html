@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Books - SiwBooks, online Library</title>
+
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="/css/style.css" />
+	<link rel="stylesheet" href="/css/showAll.css" />
+</head>
+
+<body>
+	<!-- Bootstrap JS -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm">
+		<div class="container-fluid">
+			<a class="navbar-brand d-flex align-items-center" href="/">
+				<i class="fas fa-book-open me-2"></i>
+				SiwBooks
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+				<ul class="navbar-nav">
+					<!-- Public Link -->
+					<li class="nav-item">
+						<a class="nav-link" aria-current="page" href="/">Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" href="/books">Books</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/authors">Authors</a>
+					</li>
+
+					<!-- Admin Area -->
+					<li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+						<a class="nav-link" aria-current="page" href="/manageBooks">Manage Books</a>
+					</li>
+					<li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+						<a class="nav-link" href="/manageAuthors">Manage Authors</a>
+					</li>
+					
+					<!-- Logout -->
+					<li class="nav-item" sec:authorize="isAuthenticated()">
+						<a class="nav-link" href="/logout">Logout</a>
+					</li>
+
+					<!-- Login and Signup -->
+					<li class="nav-item" sec:authorize="!isAuthenticated()">
+						<a class="nav-link" href="/login">Login</a>
+					</li>
+					<li class="nav-item" sec:authorize="!isAuthenticated()">
+						<a class="nav-link" href="/register">Sign-up</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	
+	<!-- Hero Section -->
+	<section class="books-hero">
+		<div class="container">
+			<div class="books-hero-content animate-on-scroll">
+				<h1><i class="fas fa-book-reader me-3"></i>Discover Amazing Books</h1>
+				<p>Explore our vast collection of literary masterpieces, from timeless classics to contemporary bestsellers. Every book tells a story, and every story opens a new world.</p>
+				
+				<!-- Search Section -->
+				<div class="search-section animate-on-scroll">
+					<div class="search-box">
+						<i class="fas fa-search search-icon"></i>
+						<input type="text" class="form-control search-input" placeholder="Search for books, authors, or genres...">
+					</div>
+					<div class="filter-tags">
+						<button class="filter-tag"><i class="fas fa-heart me-2"></i>Romance</button>
+						<button class="filter-tag"><i class="fas fa-rocket me-2"></i>Sci-Fi</button>
+						<button class="filter-tag"><i class="fas fa-mask me-2"></i>Mystery</button>
+						<button class="filter-tag"><i class="fas fa-crown me-2"></i>Classics</button>
+						<button class="filter-tag"><i class="fas fa-magic me-2"></i>Fantasy</button>
+						<button class="filter-tag"><i class="fas fa-history me-2"></i>History</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<div th:if="${books.isEmpty()}">
+				<div class="alert alert-warning">There are no Books in the system</div>
+	</div>
+	
+	<!-- Books Section -->
+	<div class="books-container" th:if="${books != null and !books.isEmpty()}">
+	    <div class="container">
+	        <div class="section-title animate-on-scroll">
+	            <h2>Featured Books</h2>
+	            <p>Handpicked selections from our extensive library, featuring both beloved classics and exciting new releases</p>
+	        </div>
+
+	        <div class="books-grid">
+	            <!-- Book Cards -->
+	            <div th:each="book : ${books}" class="book-card animate-on-scroll">
+	                <div class="book-cover-container">
+	                    <img src="/images/copertina.jpg" class="book-cover" alt="Book cover" />
+	                    <div class="book-overlay"></div>
+	                    <div class="book-actions">
+	                        <button class="btn btn-primary-custom me-2">
+	                            <i class="fas fa-eye me-2"></i>View Details
+	                        </button>
+	                    </div>
+	                </div>
+	                <div class="book-info">
+	                    <h3 class="book-title">[[${book.title}]]</h3>
+	                    <p class="book-author">
+	                        by <span th:each="author, authorStat : ${book.authors}">
+	                            [[${author.name}]] [[${author.surname}]]<span th:if="${!authorStat.last}">, </span>
+	                        </span>
+	                    </p>
+	                </div>
+	            </div>
+	        </div>
+			<!-- Add New Book Button -->
+			<div class="text-center mt-4">
+			            <a href="/formNewBook" class="btn btn-primary-custom me-2">
+			                <i class="fas fa-plus me-2"></i>Add New Book
+			            </a>
+			        </div>
+			    </div>
+			</div>
+	
+	<!--Footer-->
+	<footer class="footer text-white mt-auto">
+	  <div class="container py-4 text-center">
+	    <div class="row">
+	      <div class="col-md-4 mb-3">
+	        <h5 class="fw-bold">SiwBooks</h5>
+	        <p class="small">Discover, enjoy, and explore thousands of books from your favorite authors!</p>
+	      </div>
+	      <div class="col-md-4 mb-3">
+	        <h6 class="fw-bold">Navigation</h6>
+	        <ul class="list-unstyled">
+	          <li><a href="/books" class="footer-link">Books</a></li>
+			  <li><a href="/authors" class="footer-link">Authors</a></li>
+	        </ul>
+	      </div>
+	      <div class="col-md-4 mb-3">
+	        <h6 class="fw-bold">Contacts</h6>
+	        <p class="small mb-1">Email: info@siwbooks.com</p>
+	        <p class="small">Phone number: +39 0123 456789</p>
+	      </div>
+	    </div>
+	    <hr class="border-light" />
+	    <p class="small mb-0">© 2025 SiwBooks - EU</p>
+	  </div>
+	</footer>
+	
+	<script>
+		// Scroll animations
+		const observerOptions = {
+			threshold: 0.1,
+			rootMargin: '0px 0px -50px 0px'
+		};
+
+		const observer = new IntersectionObserver(function (entries) {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('animate');
+				}
+			});
+		}, observerOptions);
+
+		// Observe all elements with animate-on-scroll class
+		document.querySelectorAll('.animate-on-scroll').forEach(el => {
+			observer.observe(el);
+		});
+
+		// Navbar scroll effect
+		window.addEventListener('scroll', function () {
+			const navbar = document.querySelector('.navbar');
+			if (window.scrollY > 50) {
+				navbar.style.background = 'linear-gradient(135deg, rgba(0,184,148,0.95) 0%, rgba(0,206,201,0.95) 100%)';
+				navbar.style.backdropFilter = 'blur(15px)';
+			} else {
+				navbar.style.background = 'linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%)';
+				navbar.style.backdropFilter = 'blur(10px)';
+			}
+		});
+
+		// Smooth scrolling for anchor links
+		document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+			anchor.addEventListener('click', function (e) {
+				e.preventDefault();
+				const target = document.querySelector(this.getAttribute('href'));
+				if (target) {
+					target.scrollIntoView({
+						behavior: 'smooth',
+						block: 'start'
+					});
+				}
+			});
+		});
+
+		// Enhanced book card interactions
+		document.querySelectorAll('.book-card').forEach(card => {
+			card.addEventListener('mouseenter', function () {
+				this.style.transform = 'translateY(-10px) scale(1.02)';
+				this.style.boxShadow = '0 20px 50px rgba(0,184,148,0.2)';
+			});
+
+			card.addEventListener('mouseleave', function () {
+				this.style.transform = 'translateY(0) scale(1)';
+				this.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+			});
+		});
+
+		// Search functionality
+		const searchInput = document.querySelector('.search-input');
+		const filterTags = document.querySelectorAll('.filter-tag');
+		
+		searchInput.addEventListener('input', function() {
+			// Add search functionality here
+			console.log('Searching for:', this.value);
+		});
+		
+		filterTags.forEach(tag => {
+			tag.addEventListener('click', function() {
+				// Add filter functionality here
+				console.log('Filter selected:', this.textContent);
+			});
+		});
+
+		// Stats counter animation
+		const statNumbers = document.querySelectorAll('.stat-number');
+		const statsObserver = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					const target = entry.target;
+					const finalNumber = target.textContent.replace(/[^\d]/g, '');
+					let currentNumber = 0;
+					const increment = finalNumber / 50;
+					
+					const counter = setInterval(() => {
+						currentNumber += increment;
+						if (currentNumber >= finalNumber) {
+							target.textContent = target.textContent;
+							clearInterval(counter);
+						} else {
+							target.textContent = Math.floor(currentNumber) + target.textContent.replace(/[\d]/g, '').replace(/[^\d\+]/g, '+');
+						}
+					}, 30);
+				}
+			});
+		});
+		
+		statNumbers.forEach(stat => {
+			statsObserver.observe(stat);
+		});
+	</script>
+</body>
+
+</html>
