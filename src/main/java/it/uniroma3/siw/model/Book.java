@@ -3,6 +3,7 @@ package it.uniroma3.siw.model;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,7 +35,7 @@ public class Book {
 	private String title;
 	
 	@Column(nullable = false)
-	@NotBlank
+	@NotNull
     @Min(1000)
     @Max(2025)
 	private Integer year;
@@ -45,11 +46,10 @@ public class Book {
 	private String description;
 
 	@Lob
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Image image;
 	
 	@ManyToMany
-	@NotNull
 	private List<Author> authors;
 	
 	@OneToMany(mappedBy = "book")

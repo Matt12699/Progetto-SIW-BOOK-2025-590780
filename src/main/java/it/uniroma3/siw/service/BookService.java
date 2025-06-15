@@ -15,4 +15,12 @@ public class BookService {
 	public Iterable<Book> getAllBooks(){
 		return bookRepository.findAll();
 	}
+	
+	public Book save(Book book) {
+		return bookRepository.save(book);
+	}
+	
+	public Book findById(Long id) {
+		return bookRepository.findById(id).get();
+	}
 }

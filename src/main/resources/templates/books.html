@@ -115,7 +115,7 @@
 	            <!-- Book Cards -->
 	            <div th:each="book : ${books}" class="book-card animate-on-scroll">
 	                <div class="book-cover-container">
-	                    <img src="/images/copertina.jpg" class="book-cover" alt="Book cover" />
+	                    <img th:src="@{/book/image/{id}(id=${book.id})}" class="book-cover" alt="Book cover" />
 	                    <div class="book-overlay"></div>
 	                    <div class="book-actions">
 	                        <button class="btn btn-primary-custom me-2">
@@ -133,14 +133,15 @@
 	                </div>
 	            </div>
 	        </div>
+			</div>
+			</div>
 			<!-- Add New Book Button -->
 			<div class="text-center mt-4">
 			            <a href="/formNewBook" class="btn btn-primary-custom me-2">
 			                <i class="fas fa-plus me-2"></i>Add New Book
 			            </a>
-			        </div>
-			    </div>
-			</div>
+			       
+					</div>
 	
 	<!--Footer-->
 	<footer class="footer text-white mt-auto">

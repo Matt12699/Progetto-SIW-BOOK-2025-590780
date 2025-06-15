@@ -19,6 +19,7 @@
 	<!-- Custom CSS -->
 	<link rel="stylesheet" href="/css/style.css" />
 	<link rel="stylesheet" href="/css/form.css" />
+	<link rel="stylesheet" href="/css/newBook.css" />
 </head>
 
 <body class="form-page">
@@ -39,7 +40,7 @@
 	<div class="form-container">
 		<h1 class="form-title text-center">Insert a new Book</h1>
 
-		<form th:action="@{/addBook}" method="POST">
+		<form th:action="@{/addBook}" method="POST" enctype="multipart/form-data">
 			<!-- Title field -->
 			<div class="form-group mb-3">
 				<label for="titleInput" class="form-label">Title</label>
@@ -59,16 +60,63 @@
 			<!-- Description field -->
 			<div class="form-group mb-3">
 				<label for="descriptionInput" class="form-label">Description</label>
-				<input type="text" class="form-control custom-input" id="descriptionInput" th:field="${book.description}"
-					placeholder="Description">
-				<div class="error" th:if="${#fields.hasErrors('book.description')}" th:errors="${book.description}"></div>
+				<input type="text" class="form-control custom-input" id="descriptionInput"
+					th:field="${book.description}" placeholder="Description">
+				<div class="error" th:if="${#fields.hasErrors('book.description')}" th:errors="${book.description}">
+				</div>
 			</div>
 
-			<!-- Submit button -->
-			<button type="submit" class="form-btn">Add Book</button>
+			<!-- Image field -->
+			<div class="form-group mb-3">
+				<label for="imageInput" class="form-label">Image</label>
+				<input type="file" class="form-control custom-input" id="imageInput" name="imageFile" />
+			</div>
+			<!--Authors-->
+			<div class="demo-container" th:if="${authors != null and !authors.isEmpty()}">
+			    <h1 class="demo-title">Selectable Authors</h1>
+			    
+			    <div class="books-container">
+			        <div class="books-grid">
+			            <!-- Author Card -->
+			            <div class="book-card" th:each="author : ${authors}">
+			                <div class="book-cover-container">
+			                    <img th:src="@{/author/image/{id}(id=${author.id})}" 
+			                         class="book-cover" alt="Author Cover" />
+			                    <div class="book-overlay"></div>
+			                    <div class="book-actions">
+			                        <button class="btn btn-primary-custom">
+			                            <i class="fas fa-eye"></i>View Details
+			                        </button>
+			                    </div>
+			                </div>
+			                <div class="book-info">
+			                    <h3 class="book-title">[[${author.name}]] [[${author.surname}]]</h3>
+			                    <div class="book-author">
+			                        <div class="info-row">
+			                            <span class="info-label">Nationality:</span>
+			                            <span class="info-value">[[${author.nationality}]]</span>
+			                        </div>
+			                        <div class="info-row">
+			                            <span class="info-label">Date of birth:</span>
+			                            <span class="info-value">[[${author.dateOfBirth}]]</span>
+			                        </div>
+			                        <div class="info-row">
+			                            <span class="info-label">Date of death:</span>
+			                            <span class="info-value">[[${author.dateOfDeath}]]</span>
+			                        </div>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+
+			<div class="form-btn-container">
+			    <button type="submit" class="form-btn">Add Book</button>
+			</div>
 		</form>
 
-	</div>
+
 
 </body>
 
