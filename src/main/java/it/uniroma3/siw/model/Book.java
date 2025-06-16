@@ -2,6 +2,7 @@ package it.uniroma3.siw.model;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -50,7 +51,7 @@ public class Book {
 	private Image image;
 	
 	@ManyToMany
-	private List<Author> authors;
+	private Set<Author> authors;
 	
 	@OneToMany(mappedBy = "book")
 	private List<Review> reviews;
@@ -97,11 +98,11 @@ public class Book {
 		this.image = image;
 	}
 
-	public List<Author> getAuthors() {
+	public Set<Author> getAuthors() {
 		return authors;
 	}
 
-	public void setAuthors(List<Author> authors) {
+	public void setAuthors(Set<Author> authors) {
 		this.authors = authors;
 	}
 

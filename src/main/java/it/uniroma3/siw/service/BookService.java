@@ -23,4 +23,8 @@ public class BookService {
 	public Book findById(Long id) {
 		return bookRepository.findById(id).get();
 	}
+	
+	public void addAuthorToBook(Long bookId, Long authorId) {
+		bookRepository.addAuthorToBook(bookId, authorId);
+	}
 }

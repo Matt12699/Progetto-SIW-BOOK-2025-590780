@@ -49,6 +49,11 @@
     background: var(--white);
 }
 
+.book-card.selected {
+    border: 2px solid var(--accent-gold);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
+}
+
 .book-cover-container {
     position: relative;
     overflow: hidden;
@@ -97,6 +102,9 @@
     opacity: 1;
     pointer-events: auto;
 }
+
+
+
 
 .btn-primary-custom {
     background: linear-gradient(135deg, var(--primary-brown) 0%, var(--secondary-brown) 100%);

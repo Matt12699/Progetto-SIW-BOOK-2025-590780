@@ -126,7 +126,7 @@
 	                <div class="book-info">
 	                    <h3 class="book-title">[[${book.title}]]</h3>
 	                    <p class="book-author">
-	                        by <span th:each="author, authorStat : ${book.authors}">
+	                        by <span th:each="author, authorStat : ${book.authors}" th:if="${book.authors != null}">
 	                            [[${author.name}]] [[${author.surname}]]<span th:if="${!authorStat.last}">, </span>
 	                        </span>
 	                    </p>
