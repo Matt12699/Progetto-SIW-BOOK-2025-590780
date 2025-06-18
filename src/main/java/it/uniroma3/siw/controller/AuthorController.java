@@ -40,8 +40,16 @@ public class AuthorController {
 	}
 
 	@GetMapping(value = "/authors") 
-	public String showAuthors(Model model) {
-		model.addAttribute("authors", this.authorService.getAllAuthors());
+	public String showAuthors(@RequestParam(required=false) String search, Model model) {
+		
+		if(search!=null && !search.trim().isEmpty()) {
+			model.addAttribute("authors", this.authorService.findByTitleContaining(search));
+			model.addAttribute("searchQuery", search);
+		}else
+		{
+			model.addAttribute("authors", this.authorService.getAllAuthors());
+		}
+		
 		return "authors.html";
 	}
 	

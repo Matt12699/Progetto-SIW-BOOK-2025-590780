@@ -31,4 +31,8 @@ public class AuthorService {
 	public Iterable<Author> findAllById(List<Long> id) {
 		return authorRepository.findAllById(id);
 	}
+	
+	public List<Author> findByTitleContaining(String keyword) {
+		return authorRepository.findByTitleContaining(keyword);
+	}
 }

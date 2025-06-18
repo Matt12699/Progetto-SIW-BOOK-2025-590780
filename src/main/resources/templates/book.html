@@ -19,6 +19,7 @@
 	<!-- Custom CSS -->
 	<link rel="stylesheet" href="/css/style.css" />
 	<link rel="stylesheet" href="/css/singleElement.css" />
+	<link rel="stylesheet" href="/css/review.css" />
 </head>
 
 <body>
@@ -122,31 +123,78 @@
 
 								</p>
 							</div>
-							<div class="book-description">
-								<h4 class="available-books-title">Reviews by the community</h4>
-								<p>
-									<span th:each="review : ${book.reviews}" th:if="${book.reviews != null}"></span>
-								<p th:if="${book.reviews.isEmpty()}">There are no reviews</p>
-								</p>
+							
+							<!--Reviews section-->
+							<div class="reviews-section">
+								<h4 class="reviews-title">
+									<i class="fas fa-comments"></i>
+									Reviews by the community
+								</h4>
+
+								<!-- No Reviews State -->
+								<div th:if="${book.reviews.isEmpty()}" class="no-reviews">
+									<i class="fas fa-comment-slash"></i>
+									<p>No reviews yet.</p>
+								</div>
+
+								<!-- Reviews Container -->
+								<div th:if="${!book.reviews.isEmpty()}" class="reviews-container">
+									<div th:each="review : ${book.reviews}" class="review-card">
+										<!-- Review Header -->
+										<div class="review-header">
+											<div class="review-author">
+												<!--Creiamo prendendo la prima lettera dello username un avatar fittizio-->
+												<div class="review-author-avatar">
+													<span
+														th:text="${#strings.substring(review.user.credentials.username, 0, 1)}">U</span>
+												</div>
+												<div class="review-author-info">
+													<h6 th:text="${review.user.credentials.username}">Username</h6>
+													<p class="review-username">Verified Reader</p>
+												</div>
+											</div>
+
+											<div class="review-rating">
+												<div class="review-stars">
+													<!-- Stelle piene basate sul rating -->
+													<!-- Questo serve a ripetere la stella per ogni rating-->
+													<span th:each="i : ${#numbers.sequence(1, review.rating)}"
+														class="review-star">★</span>
+												</div>
+												<span class="review-rating-text"
+													th:text="${review.rating} + '/5'">5/5</span>
+											</div>
+										</div>
+
+										<!-- Review Content -->
+										<div class="review-content">
+											<h5 class="review-title" th:text="${review.title}">Review Title</h5>
+											<p class="review-description" th:text="${review.description}">Review
+												description goes here...</p>
+										</div>
+
+									
+										
+										</div>
+									</div>
+								</div>
+
 								<div class="d-flex gap-3 flex-wrap">
-									<a href="#" class="btn btn-primary-custom me-2" id="openReviewModal" sec:authorize="isAuthenticated()">
-									    <i class="fas fa-edit"></i>
-									    Write a review
+									<a href="#" class="btn btn-primary-custom me-2" id="openReviewModal"
+										sec:authorize="isAuthenticated()">
+										<i class="fas fa-edit"></i>
+										Write a review
+									</a>
+									<a href="/books" class="btn btn-primary-custom me-2">
+										<i class="fas fa-arrow-left"></i>
+										Back to the books
 									</a>
 								</div>
-							</div>
-
-							<div class="d-flex gap-3 flex-wrap">
-								<a href="/books" class="btn btn-primary-custom me-2">
-									<i class="fas fa-arrow-left"></i>
-									Back to the books
-								</a>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 	</main>
 
 	<!-- Footer -->
@@ -236,193 +284,166 @@
 			}, 100);
 		});
 	</script>
-	
+
 	<!-- Modal per la recensione -->
 	<div id="reviewModal" class="review-modal">
-	    <div class="review-modal-content">
-	        <div class="review-modal-header">
-	            <h3 class="review-modal-title">
-	                <i class="fas fa-star"></i>
-	                Write a Review
-	            </h3>
-	            <button type="button" class="review-modal-close" id="closeReviewModal">
-	                <i class="fas fa-times"></i>
-	            </button>
-	        </div>
-	        
-	        <div class="review-modal-body">
-	            <form id="reviewForm" class="review-form">
-	                <div class="form-group">
-	                    <label for="reviewRating" class="form-label">
-	                        <i class="fas fa-star"></i>
-	                        Rating:
-	                    </label>
-	                    <div class="rating-container">
-	                        <div class="star-rating">
-	                            <input type="radio" id="star5" name="rating" value="5" />
-	                            <label for="star5" class="star">★</label>
-	                            <input type="radio" id="star4" name="rating" value="4" />
-	                            <label for="star4" class="star">★</label>
-	                            <input type="radio" id="star3" name="rating" value="3" />
-	                            <label for="star3" class="star">★</label>
-	                            <input type="radio" id="star2" name="rating" value="2" />
-	                            <label for="star2" class="star">★</label>
-	                            <input type="radio" id="star1" name="rating" value="1" />
-	                            <label for="star1" class="star">★</label>
-	                        </div>
-	                        <span class="rating-text">Select a rating</span>
-	                    </div>
-	                </div>
-	                
-	                <div class="form-group">
-	                    <label for="reviewTitle" class="form-label">
-	                        <i class="fas fa-heading"></i>
-	                        Review Title:
-	                    </label>
-	                    <input type="text" id="reviewTitle" name="title" class="form-control" 
-	                           placeholder="Give your review a title..." maxlength="100" required>
-	                </div>
-	                
-	                <div class="form-group">
-	                    <label for="reviewContent" class="form-label">
-	                        <i class="fas fa-comment"></i>
-	                        Your Review:
-	                    </label>
-	                    <textarea id="reviewContent" name="content" class="form-control" rows="6" 
-	                              placeholder="Share your thoughts about this book..." maxlength="1000" required></textarea>
-	                    <div class="character-count">
-	                        <span id="charCount">0</span>/1000 characters
-	                    </div>
-	                </div>
-	                
-	                <div class="form-actions">
-	                    <button type="button" class="btn btn-secondary" id="cancelReview">
-	                        <i class="fas fa-times"></i>
-	                        Cancel
-	                    </button>
-	                    <button type="submit" class="btn btn-primary">
-	                        <i class="fas fa-paper-plane"></i>
-	                        Submit Review
-	                    </button>
-	                </div>
-	            </form>
-	        </div>
-	    </div>
+		<div class="review-modal-content">
+			<div class="review-modal-header">
+				<h3 class="review-modal-title">
+					<i class="fas fa-star"></i>
+					Write a Review
+				</h3>
+				<button type="button" class="review-modal-close" id="closeReviewModal">
+					<i class="fas fa-times"></i>
+				</button>
+			</div>
+
+			<div class="review-modal-body">
+				<form id="reviewForm" th:action="@{'/book' + '/' + ${book.id}} + '/addReview'" class="review-form"
+					method="POST">
+					<div class="form-group">
+						<label for="reviewRating" class="form-label">
+							<i class="fas fa-star"></i>
+							Rating:
+						</label>
+						<div class="rating-container">
+							<div class="star-rating">
+								<input type="radio" th:field="${review.rating}" id="star5" value="5" />
+								<label for="star5" class="star">★</label>
+								<input type="radio" th:field="${review.rating}" id="star4" value="4" />
+								<label for="star4" class="star">★</label>
+								<input type="radio" th:field="${review.rating}" id="star3" value="3" />
+								<label for="star3" class="star">★</label>
+								<input type="radio" th:field="${review.rating}" id="star2" value="2" />
+								<label for="star2" class="star">★</label>
+								<input type="radio" th:field="${review.rating}" id="star1" value="1" />
+								<label for="star1" class="star">★</label>
+							</div>
+							<span class="rating-text">Select a rating</span>
+							<div class="error" th:if="${#fields.hasErrors('review.rating')}"
+								th:errors="${review.rating}">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="reviewTitle" class="form-label">
+								<i class="fas fa-heading"></i>
+								Review Title:
+							</label>
+							<input required type="text" id="reviewTitle" name="title" class="form-control"
+								th:field="${review.title}" placeholder="Give your review a title...">
+							<div class="error" th:if="${#fields.hasErrors('review.title')}" th:errors="${review.title}">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="reviewDescription" class="form-label">
+								<i class="fas fa-comment"></i>
+								Your Review:
+							</label>
+							<textarea required th:field="${review.description}" id="reviewDescription"
+								name="reviewDescription" class="form-control" rows="6"
+								placeholder="Share your thoughts about this book..."></textarea>
+							<div class="character-count">
+								<span id="charCount">0</span>/1000 characters
+							</div>
+							<div class="error" th:if="${#fields.hasErrors('review.description')}"
+								th:errors="${review.description}">
+							</div>
+
+							<div class="form-actions">
+								<button type="button" class="btn btn-secondary" id="cancelReview">
+									<i class="fas fa-times"></i>
+									Cancel
+								</button>
+								<button type="submit" class="btn btn-primary">
+									<i class="fas fa-paper-plane"></i>
+									Submit Review
+								</button>
+							</div>
+				</form>
+			</div>
+		</div>
 	</div>
-	
+
 	<script>
-	document.addEventListener('DOMContentLoaded', function() {
-	    const reviewModal = document.getElementById('reviewModal');
-	    const openModalBtn = document.getElementById('openReviewModal');
-	    const closeModalBtn = document.getElementById('closeReviewModal');
-	    const cancelBtn = document.getElementById('cancelReview');
-	    const reviewForm = document.getElementById('reviewForm');
-	    const charCountSpan = document.getElementById('charCount');
-	    const reviewContent = document.getElementById('reviewContent');
-	    const ratingText = document.querySelector('.rating-text');
-	    const starInputs = document.querySelectorAll('.star-rating input[type="radio"]');
+		document.addEventListener('DOMContentLoaded', function () {
+			const reviewModal = document.getElementById('reviewModal');
+			const openModalBtn = document.getElementById('openReviewModal');
+			const closeModalBtn = document.getElementById('closeReviewModal');
+			const cancelBtn = document.getElementById('cancelReview');
+			const charCountSpan = document.getElementById('charCount');
+			const reviewContent = document.getElementById('reviewDescription');
+			const ratingText = document.querySelector('.rating-text');
+			const starInputs = document.querySelectorAll('.star-rating input[type="radio"]');
 
-	    // Apri modal
-	    if (openModalBtn) {
-	        openModalBtn.addEventListener('click', function(e) {
-	            e.preventDefault();
-	            reviewModal.style.display = 'flex';
-	            document.body.style.overflow = 'hidden';
-	            setTimeout(() => {
-	                reviewModal.classList.add('show');
-	            }, 10);
-	        });
-	    }
+			// Apri modal
+			if (openModalBtn) {
+				openModalBtn.addEventListener('click', function (e) {
+					e.preventDefault();
+					reviewModal.style.display = 'flex';
+					document.body.style.overflow = 'hidden';
+					setTimeout(() => {
+						reviewModal.classList.add('show');
+					}, 10);
+				});
+			}
 
-	    // Chiudi modal
-	    function closeModal() {
-	        reviewModal.classList.remove('show');
-	        setTimeout(() => {
-	            reviewModal.style.display = 'none';
-	            document.body.style.overflow = 'auto';
-	            reviewForm.reset();
-	            charCountSpan.textContent = '0';
-	            ratingText.textContent = 'Select a rating';
-	        }, 300);
-	    }
+			// Chiudi modal
+			function closeModal() {
+				reviewModal.classList.remove('show');
+				setTimeout(() => {
+					reviewModal.style.display = 'none';
+					document.body.style.overflow = 'auto';
+				}, 300);
+			}
 
-	    closeModalBtn.addEventListener('click', closeModal);
-	    cancelBtn.addEventListener('click', closeModal);
+			closeModalBtn.addEventListener('click', closeModal);
+			cancelBtn.addEventListener('click', closeModal);
 
-	    // Chiudi cliccando fuori
-	    reviewModal.addEventListener('click', function(e) {
-	        if (e.target === reviewModal) {
-	            closeModal();
-	        }
-	    });
+			// Chiudi cliccando fuori
+			reviewModal.addEventListener('click', function (e) {
+				if (e.target === reviewModal) {
+					closeModal();
+				}
+			});
 
-	    // Chiudi con ESC
-	    document.addEventListener('keydown', function(e) {
-	        if (e.key === 'Escape' && reviewModal.classList.contains('show')) {
-	            closeModal();
-	        }
-	    });
+			// Chiudi con ESC
+			document.addEventListener('keydown', function (e) {
+				if (e.key === 'Escape' && reviewModal.classList.contains('show')) {
+					closeModal();
+				}
+			});
 
-	    // Conteggio caratteri
-	    reviewContent.addEventListener('input', function() {
-	        const count = this.value.length;
-	        charCountSpan.textContent = count;
-	        
-	        if (count > 900) {
-	            charCountSpan.style.color = 'var(--accent-gold)';
-	        } else {
-	            charCountSpan.style.color = 'var(--gray)';
-	        }
-	    });
+			// Conteggio caratteri
+			reviewContent.addEventListener('input', function () {
+				const count = this.value.length;
+				charCountSpan.textContent = count;
 
-	    // Gestione rating stelle
-	    starInputs.forEach(input => {
-	        input.addEventListener('change', function() {
-	            const rating = this.value;
-	            const ratingTexts = {
-	                '1': 'Poor',
-	                '2': 'Fair',
-	                '3': 'Good',
-	                '4': 'Very Good',
-	                '5': 'Excellent'
-	            };
-	            ratingText.textContent = ratingTexts[rating];
-	        });
-	    });
+				if (count > 900) {
+					charCountSpan.style.color = 'var(--accent-gold)';
+				} else {
+					charCountSpan.style.color = 'var(--gray)';
+				}
+			});
 
-	    // Submit form (esempio - sostituire con la logica desiderata)
-	    reviewForm.addEventListener('submit', function(e) {
-	        e.preventDefault();
-	        
-	        const formData = new FormData(this);
-	        const rating = formData.get('rating');
-	        const title = formData.get('title');
-	        const content = formData.get('content');
-	        
-	        if (!rating) {
-	            alert('Please select a rating');
-	            return;
-	        }
-	        
-	        // Qui inserire la logica per inviare la recensione
-	        console.log('Review data:', { rating, title, content });
-	        
-	        // Simulazione invio
-	        const submitBtn = this.querySelector('button[type="submit"]');
-	        const originalText = submitBtn.innerHTML;
-	        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-	        submitBtn.disabled = true;
-	        
-	        setTimeout(() => {
-	            alert('Review submitted successfully!');
-	            closeModal();
-	            submitBtn.innerHTML = originalText;
-	            submitBtn.disabled = false;
-	        }, 1500);
-	    });
-	});
+			// Gestione rating stelle
+			starInputs.forEach(input => {
+				input.addEventListener('change', function () {
+					const rating = this.value;
+					const ratingTexts = {
+						'1': 'Poor',
+						'2': 'Fair',
+						'3': 'Good',
+						'4': 'Very Good',
+						'5': 'Excellent'
+					};
+					ratingText.textContent = ratingTexts[rating];
+				});
+			});
+		});
 	</script>
-	
+
 </body>
 
 </html>

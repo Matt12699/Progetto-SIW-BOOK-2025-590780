@@ -1,5 +1,7 @@
 package it.uniroma3.siw.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
@@ -26,6 +28,10 @@ public class BookService {
 	
 	public void addAuthorToBook(Long bookId, Long authorId) {
 		bookRepository.addAuthorToBook(bookId, authorId);
+	}
+	
+	public List<Book> findByTitleContaining(String keyword) {
+		return bookRepository.findByTitleContaining(keyword);
 	}
 	
 }

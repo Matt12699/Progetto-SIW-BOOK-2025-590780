@@ -81,20 +81,24 @@
 				<p>Explore our vast collection of literary masterpieces, from timeless classics to contemporary bestsellers. Every book tells a story, and every story opens a new world.</p>
 				
 				<!-- Search Section -->
-				<div class="search-section animate-on-scroll">
-					<div class="search-box">
-						<i class="fas fa-search search-icon"></i>
-						<input type="text" class="form-control search-input" placeholder="Search for books, authors, or genres...">
-					</div>
-					<div class="filter-tags">
-						<button class="filter-tag"><i class="fas fa-heart me-2"></i>Romance</button>
-						<button class="filter-tag"><i class="fas fa-rocket me-2"></i>Sci-Fi</button>
-						<button class="filter-tag"><i class="fas fa-mask me-2"></i>Mystery</button>
-						<button class="filter-tag"><i class="fas fa-crown me-2"></i>Classics</button>
-						<button class="filter-tag"><i class="fas fa-magic me-2"></i>Fantasy</button>
-						<button class="filter-tag"><i class="fas fa-history me-2"></i>History</button>
-					</div>
+				<form method="GET" action="/books" class="search-section animate-on-scroll">
+				    <div class="search-container">
+				        <div class="search-box">
+				            <i class="fas fa-search search-icon"></i>
+				            <input type="text" name="search" class="form-control search-input" 
+				                   placeholder="Search for books..." th:value="${searchQuery}">
+				        </div>
+				        <button type="submit" class="btn btn-primary-custom search-button">
+				            <i class="fas fa-search me-2"></i>Search
+				        </button>
+				    </div>
+				</form>
+				<!-- Mostra messaggio se c'è una ricerca attiva -->
+				<div th:if="${searchQuery != null}" class="search-results-info">
+				    <p>Showing results for: "<strong th:text="${searchQuery}"></strong>"</p>
+				    <a href="/books" class="btn btn-primary-custom">Clear search</a>
 				</div>
+			</div>
 			</div>
 		</div>
 	</section>
@@ -106,7 +110,7 @@
 	<!-- Books Section -->
 	<div class="books-container" th:if="${books != null and !books.isEmpty()}">
 	    <div class="container">
-	        <div class="section-title animate-on-scroll">
+	        <div class="section-title animate-on-scroll" th:if="${searchQuery==null}">
 	            <h2>Featured Books</h2>
 	            <p>Handpicked selections from our extensive library, featuring both beloved classics and exciting new releases</p>
 	        </div>

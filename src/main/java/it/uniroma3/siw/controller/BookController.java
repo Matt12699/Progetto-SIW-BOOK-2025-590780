@@ -23,6 +23,7 @@ import it.uniroma3.siw.model.Author;
 import it.uniroma3.siw.model.Book;
 import it.uniroma3.siw.model.Image;
 import it.uniroma3.siw.model.Review;
+import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.service.AuthorService;
 import it.uniroma3.siw.service.BookService;
 import it.uniroma3.siw.service.ReviewService;
@@ -62,8 +63,15 @@ public class BookController {
 
 	//Get mapping della pagina che mostra i libri
 	@GetMapping(value = "/books") 
-	public String showBooks(Model model) {
-		model.addAttribute("books", this.bookService.getAllBooks());
+	public String showBooks(@RequestParam(required=false) String search, Model model) {
+		
+		if(search!=null && !search.trim().isEmpty()) {
+			model.addAttribute("books", this.bookService.findByTitleContaining(search));
+			model.addAttribute("searchQuery", search);
+		}else {
+			model.addAttribute("books", this.bookService.getAllBooks());
+		}
+		
 		return "books.html";
 	}
 
@@ -111,20 +119,21 @@ public class BookController {
 	}
 
 	//Post mapping per l'inserimento di una review
-	@PostMapping("/book/{id}/addReview")
-	public String addReview(@Valid @ModelAttribute("review") Review review, BindingResult bindingResult, @PathVariable Long bookId ,Model model) throws IOException {
+	@PostMapping("/book/{bookId}/addReview")
+	public String addReview(@Valid @ModelAttribute("review") Review review, BindingResult bindingResult, @ModelAttribute("currentUser") User user, @PathVariable("bookId") Long bookId ,Model model) throws IOException {
 
 		if (bindingResult.hasErrors()) { // sono emersi errori nel binding
-			return "redirect:/book/{id}";
+			return "redirect:/book/{bookId}";
 		} else {                         // NON sono emersi errori nel binding
 
 			// Salva la review
 			Book book = bookService.findById(bookId);
-			book.getReviews().add(review);
+			review.setUser(user);
+			review.setBook(book);
 			reviewService.save(review);
 
 			// Reindirizza alla lista dei libri
-			return "redirect:/book/{id}";
+			return "redirect:/book/{bookId}";
 
 		}
 

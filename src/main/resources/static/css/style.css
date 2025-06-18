@@ -1,4 +1,9 @@
 /* ==========================================
+   FONT IMPORT - Poppins da Google Fonts
+   ========================================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* ==========================================
    GLOBAL STYLES - Da applicare a tutte le pagine
    ========================================== */
 
@@ -33,6 +38,156 @@ body {
     overflow-x: hidden;
     font-weight: 400;
     letter-spacing: -0.02em; 
+    line-height: 1.6;
+}
+
+/* Assicura che tutti gli elementi di testo usino il font Poppins */
+h1, h2, h3, h4, h5, h6,
+p, span, div, a, button,
+input, textarea, select,
+label, .navbar-brand, .nav-link,
+.btn, .form-control {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ==========================================
+   ALERT STYLES - Design moderno e centrato
+   ========================================== */
+
+.alert {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.25rem 2rem;
+    margin: 2rem auto;
+    max-width: 500px;
+    border-radius: 16px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    border: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(20px);
+    text-align: center;
+}
+
+.alert::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.alert:hover::before {
+    transform: translateX(100%);
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, rgba(255,111,0,0.9) 0%, rgba(255,183,77,0.9) 100%);
+    color: var(--white);
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.alert-warning:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(255,111,0,0.25);
+}
+
+/* Icona moderna */
+.alert-warning::after {
+    content: '\f071';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 1.2rem;
+    opacity: 0.9;
+    order: -1;
+}
+
+/* Varianti aggiuntive moderne */
+.alert-info {
+    background: linear-gradient(135deg, rgba(55,71,79,0.9) 0%, rgba(84,110,122,0.9) 100%);
+    color: var(--white);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.alert-info::after {
+    content: '\f05a';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 1.2rem;
+    opacity: 0.9;
+    order: -1;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, rgba(76,175,80,0.9) 0%, rgba(102,187,106,0.9) 100%);
+    color: var(--white);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.alert-success::after {
+    content: '\f058';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 1.2rem;
+    opacity: 0.9;
+    order: -1;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, rgba(211,47,47,0.9) 0%, rgba(229,115,115,0.9) 100%);
+    color: var(--white);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.alert-danger::after {
+    content: '\f06a';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 1.2rem;
+    opacity: 0.9;
+    order: -1;
+}
+
+/* Responsive moderno */
+@media (max-width: 768px) {
+    .alert {
+        max-width: 90%;
+        padding: 1rem 1.5rem;
+        margin: 1.5rem auto;
+        border-radius: 12px;
+        gap: 0.75rem;
+    }
+    
+    .alert::after {
+        font-size: 1rem;
+    }
+}
+
+/* Animazione di entrata */
+@keyframes alertSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.alert {
+    animation: alertSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ==========================================
@@ -46,6 +201,7 @@ body {
 }
 
 .navbar-brand {
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 1.5rem;
     transition: transform 0.3s ease;
@@ -58,6 +214,7 @@ body {
 }
 
 .nav-link {
+    font-family: 'Poppins', sans-serif;
     font-weight: 500;
     position: relative;
     transition: all 0.3s ease;
@@ -99,11 +256,24 @@ body {
     background: linear-gradient(135deg, var(--primary-brown) 0%, var(--secondary-brown) 50%, var(--accent-gold) 100%);
     color: var(--cream);
     padding: 3rem 0 1rem;
+    font-family: 'Poppins', sans-serif;
 }
 
 .footer h5 {
     color: var(--accent-gold);
     margin-bottom: 1rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+.footer h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+.footer p {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
 }
 
 .footer-link {
@@ -112,6 +282,8 @@ body {
     transition: all 0.3s ease;
     display: block;
     margin-bottom: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
 }
 
 .footer-link:hover {
@@ -121,6 +293,41 @@ body {
 
 .fw-bold {
     color: var(--accent-gold);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+
+/* ==========================================
+   TYPOGRAPHY STYLES CON POPPINS
+   ========================================== */
+h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+}
+
+h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+}
+
+h3 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+p {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
 }
 
 /* ==========================================
@@ -136,6 +343,7 @@ body {
     border-radius: 12px;
     transition: all 0.3s ease;
     letter-spacing: -0.01em;
+    font-family: 'Poppins', sans-serif;
 }
 
 .btn-primary:hover {
@@ -143,6 +351,29 @@ body {
     color: var(--primary-brown);
     transform: translateY(-3px);
     box-shadow: 0 15px 40px rgba(255,111,0,0.3);
+}
+
+/* Tutti i bottoni usano Poppins */
+.btn {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+}
+
+/* ==========================================
+   FORM ELEMENTS CON POPPINS
+   ========================================== */
+.form-control,
+input,
+textarea,
+select {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+}
+
+label {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
 }
 
 /* ==========================================

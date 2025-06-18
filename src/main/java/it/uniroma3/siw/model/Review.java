@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -26,10 +27,10 @@ public class Review {
 	private String title;
 	
 	@Column(nullable = false)
-	@NotBlank
+	@NotNull
 	@Min(1)
 	@Max(5)
-	private Integer vote;
+	private Integer rating;
 	
 	@Column(nullable = false)
 	@NotBlank
@@ -58,20 +59,20 @@ public class Review {
 		this.title = title;
 	}
 
-	public Integer getVote() {
-		return vote;
+	public Integer getRating() {
+		return rating;
 	}
 
-	public void setVote(Integer vote) {
-		this.vote = vote;
+	public void setRating(Integer rating) {
+		this.rating = rating;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String desc) {
-		this.description = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public User getUser() {
@@ -92,7 +93,7 @@ public class Review {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(book, description, title, user, vote);
+		return Objects.hash(book, description, title, user, rating);
 	}
 
 	@Override
@@ -106,7 +107,7 @@ public class Review {
 		Review other = (Review) obj;
 		return Objects.equals(book, other.book) && Objects.equals(description, other.description)
 				&& Objects.equals(title, other.title) && Objects.equals(user, other.user)
-				&& Objects.equals(vote, other.vote);
+				&& Objects.equals(rating, other.rating);
 	}
 	
 	
