@@ -220,24 +220,6 @@
 			font-style: italic;
 		}
 		
-		.book-price {
-			font-size: 1.4rem;
-			font-weight: 700;
-			color: var(--accent-gold, #FF6F00);
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-		}
-		
-		.price-badge {
-			background: linear-gradient(135deg, var(--accent-gold, #FF6F00) 0%, var(--deep-red, #D32F2F) 100%);
-			color: var(--white, white);
-			padding: 8px 16px;
-			border-radius: 25px;
-			font-size: 1rem;
-			font-weight: 600;
-		}
-		
 		.btn-primary-custom {
 			background: linear-gradient(135deg, var(--primary-brown, #3E2723) 0%, var(--secondary-brown, #6D4C41) 100%);
 			border: 2px solid var(--accent-gold, #FF6F00);
@@ -254,31 +236,7 @@
 			transform: translateY(-2px);
 			box-shadow: 0 5px 15px rgba(255,111,0,0.3);
 		}
-		
-		.stats-section {
-			background: linear-gradient(135deg, var(--primary-brown, #3E2723) 0%, var(--secondary-brown, #6D4C41) 50%, var(--accent-gold, #FF6F00) 100%);
-			color: var(--cream, #FAFAFA);
-			padding: 4rem 0;
-			margin: 4rem 0;
-		}
-		
-		.stat-item {
-			text-align: center;
-			padding: 1rem;
-		}
-		
-		.stat-number {
-			font-size: 3rem;
-			font-weight: 700;
-			display: block;
-			margin-bottom: 0.5rem;
-			color: var(--accent-gold, #FF6F00);
-		}
-		
-		.stat-label {
-			font-size: 1.1rem;
-			opacity: 0.9;
-		}
+	
 		
 		.animate-on-scroll {
 			opacity: 0;

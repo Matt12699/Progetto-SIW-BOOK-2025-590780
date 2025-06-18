@@ -66,11 +66,11 @@ public class Review {
 		this.vote = vote;
 	}
 
-	public String getDesc() {
+	public String getDescription() {
 		return description;
 	}
 
-	public void setDesc(String desc) {
+	public void setDescription(String desc) {
 		this.description = desc;
 	}
 

@@ -43,7 +43,6 @@ public class Book {
 	
 	@Column(nullable = false)
 	@NotBlank
-	@Size(min=2, max=100)
 	private String description;
 
 	@Lob

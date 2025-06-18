@@ -44,6 +44,12 @@ public class AuthorController {
 		model.addAttribute("authors", this.authorService.getAllAuthors());
 		return "authors.html";
 	}
+	
+	@GetMapping(value = "/author/{id}") 
+	public String showAuthor(@PathVariable Long id, Model model) {
+		model.addAttribute("author", this.authorService.findById(id));
+		return "author.html";
+	}
 
 	@GetMapping("/formNewAuthor")
 	public String formNewAuthor(Model model) {
