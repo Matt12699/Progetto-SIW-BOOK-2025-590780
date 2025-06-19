@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>Authors - SiwBooks, online Library</title>
+	<title>Managing Books - SiwBooks, online Library</title>
 
 	<!-- Bootstrap CSS -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -20,6 +20,7 @@
 	<!-- Custom CSS -->
 	<link rel="stylesheet" href="/css/style.css" />
 	<link rel="stylesheet" href="/css/showAll.css" />
+	<link rel="stylesheet" href="/css/manage.css" />
 </head>
 
 <body>
@@ -46,12 +47,12 @@
 						<a class="nav-link" href="/books">Books</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link active" href="/authors">Authors</a>
+						<a class="nav-link" href="/authors">Authors</a>
 					</li>
 
 					<!-- Admin Area -->
 					<li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
-						<a class="nav-link" aria-current="page" href="/admin/manageBooks">Manage Books</a>
+						<a class="nav-link active" aria-current="page" href="/admin/manageBooks">Manage Books</a>
 					</li>
 					<li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
 						<a class="nav-link" href="/admin/manageAuthors">Manage Authors</a>
@@ -78,72 +79,97 @@
 	<section class="books-hero">
 		<div class="container">
 			<div class="books-hero-content animate-on-scroll">
-				<h1><i class="fas fa-feather-alt me-3"></i>Discover Inspiring Authors</h1>
-				<p>Delve into the lives and works of remarkable authors from around the world. From literary legends to
-					modern storytellers, uncover the voices behind your favorite books and explore the minds that shaped
-					unforgettable stories.</p>
+				<h1><i class="fas fa-book-reader me-3"></i>Admin manage Book Area</h1>
 
-				<!-- Search Section -->
-				<form method="GET" action="/authors" class="search-section animate-on-scroll">
-					<div class="search-container">
-						<div class="search-box">
-							<i class="fas fa-search search-icon"></i>
-							<input type="text" name="search" class="form-control search-input"
-								placeholder="Search for authors..." th:value="${searchQuery}">
+				<!-- Stats Container -->
+				<div class="stats">
+					<div class="stats-container">
+						<div class="stat-item" data-stat="books">
+							<div class="stat-icon">
+								<i class="fas fa-book"></i>
+							</div>
+							<div class="stat-content">
+								<span class="stat-number">[[${bookNumber}]]</span>
+								<span class="stat-label">Total Books</span>
+							</div>
+							<div class="stat-glow"></div>
 						</div>
-						<button type="submit" class="btn btn-primary-custom search-button">
-							<i class="fas fa-search me-2"></i>Search
-						</button>
+						<div class="stat-item" data-stat="authors">
+							<div class="stat-icon">
+								<i class="fas fa-user-edit"></i>
+							</div>
+							<div class="stat-content">
+								<span class="stat-number">[[${authorNumber}]]</span>
+								<span class="stat-label">Total Authors</span>
+							</div>
+							<div class="stat-glow"></div>
+						</div>
+						<div class="stat-item" data-stat="categories">
+							<div class="stat-icon">
+								<i class="fas fa-layer-group"></i>
+							</div>
+							<div class="stat-content">
+								<span class="stat-number">[[${reviewNumber}]]</span>
+								<span class="stat-label">Total Reviews</span>
+							</div>
+							<div class="stat-glow"></div>
+						</div>
+
 					</div>
-				</form>
-				<!-- Mostra messaggio se c'è una ricerca attiva -->
-				<div th:if="${searchQuery != null}" class="search-results-info">
-					<p>Showing results for: "<strong th:text="${searchQuery}"></strong>"</p>
-					<a href="/authors" class="btn btn-primary-custom">Clear search</a>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<div th:if="${authors.isEmpty()}">
-		<div class="alert alert-warning">There are no Authors in the system</div>
+	<div th:if="${books.isEmpty()}">
+		<div class="alert alert-warning">There are no Books in the system</div>
 	</div>
 
-	<!-- Authors Section -->
-	<div class="books-container" th:if="${authors != null and !authors.isEmpty()}">
+	<!-- Books Section -->
+	<div class="books-container" th:if="${books != null and !books.isEmpty()}">
 		<div class="container">
 			<div class="section-title animate-on-scroll" th:if="${searchQuery==null}">
-				<h2>Meet the Authors</h2>
-				<p>Explore the brilliant minds behind the stories. Discover the lives, inspirations, and creative
-					journeys of the authors who shaped our literary world.</p>
+				<h2>Our Books</h2>
+				<p>Welcome to the admin dashboard! Here you can manage your entire library: add new books, edit existing
+					entries, delete outdated content, and keep your collection organized and up-to-date.</p>
 			</div>
 
 			<div class="books-grid">
-				<!-- Author Cards -->
-				<div th:each="author : ${authors}" class="book-card animate-on-scroll">
+				<!-- Book Cards -->
+				<div th:each="book : ${books}" class="book-card animate-on-scroll">
 					<div class="book-cover-container">
-						<img th:src="@{/author/image/{id}(id=${author.id})}" class="book-cover" alt="Book cover" />
+						<img th:src="@{/book/image/{id}(id=${book.id})}" class="book-cover" alt="Book cover" />
 						<div class="book-overlay"></div>
-						<div class="book-actions">
-							<a th:href="@{'/author'+'/'+${author.id}}" class="btn btn-primary-custom me-2">
-								<i class="fas fa-eye me-2"></i>View Details
-							</a>
+						<div class="book-actions d-flex flex-column gap-2">
+				
+						    <form th:action="@{'/admin/bookDelete'+'/'+${book.id}}" method="post" class="d-flex">
+						        <button type="submit" class="btn btn-primary-custom w-100">
+						            <i class="fas fa-trash me-2"></i>Delete
+						        </button>
+						    </form>
+						    <a th:href="@{'/admin/manageBook'+'/'+${book.id}}" class="btn btn-primary-custom">
+						        <i class="fas fa-edit me-2"></i>Manage
+						    </a>
 						</div>
 					</div>
 					<div class="book-info">
-						<h3 class="book-title">[[${author.name}]] [[${author.surname}]]</h3>
+						<h3 class="book-title">[[${book.title}]]</h3>
 						<p class="book-author">
-							Nationality: [[${author.nationality}]]<br>
-							Date of birth: [[${author.dateOfBirth}]]<br>
-							Date of death: [[${author.dateOfDeath}]]<br>
+							by <span th:each="author, authorStat : ${book.authors}" th:if="${book.authors != null}">
+								[[${author.name}]] [[${author.surname}]]<span th:if="${!authorStat.last}">, </span>
 							</span>
 						</p>
 					</div>
 				</div>
 			</div>
+			<!-- Add new Book -->
+			<div class="text-center mt-4">
+				<a href="/admin/formNewBook" class="btn btn-primary-custom me-2">
+					<i class="fas fa-plus me-2"></i>Add New Book
+				</a>
+			</div>
 		</div>
-		</div>
-		
+	</div>
 
 	<!--Footer-->
 	<footer class="footer text-white mt-auto">
@@ -158,8 +184,10 @@
 					<ul class="list-unstyled">
 						<li><a href="/books" class="footer-link">Books</a></li>
 						<li><a href="/authors" class="footer-link">Authors</a></li>
-						<li><a href="/admin/manageBooks" class="footer-link" sec:authorize="hasAuthority('ADMIN')">Manage Books</a></li>
-						<li><a href="/admin/manageAuthors" class="footer-link" sec:authorize="hasAuthority('ADMIN')">Manage Authors</a></li>
+						<li><a href="/admin/manageBooks" class="footer-link"
+								sec:authorize="hasAuthority('ADMIN')">Manage Books</a></li>
+						<li><a href="/admin/manageAuthors" class="footer-link"
+								sec:authorize="hasAuthority('ADMIN')">Manage Authors</a></li>
 					</ul>
 				</div>
 				<div class="col-md-4 mb-3">

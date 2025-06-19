@@ -19,6 +19,8 @@ import it.uniroma3.siw.model.Author;
 import it.uniroma3.siw.model.Book;
 import it.uniroma3.siw.model.Image;
 import it.uniroma3.siw.service.AuthorService;
+import it.uniroma3.siw.service.BookService;
+import it.uniroma3.siw.service.ReviewService;
 import jakarta.validation.Valid;
 
 
@@ -26,22 +28,24 @@ import jakarta.validation.Valid;
 public class AuthorController {
 
 	@Autowired AuthorService authorService;
-	
+	@Autowired BookService bookService;
+	@Autowired ReviewService reviewService;
+
 	@GetMapping("/author/image/{id}")
 	public ResponseEntity<byte[]> getBookImage(@PathVariable Long id) {
-	    Author author = authorService.findById(id);
-	    if (author == null || author.getImage() == null) {
-	        return ResponseEntity.notFound().build();
-	    }
-	    byte[] imageBytes = author.getImage().getImage();  
-	    return ResponseEntity.ok()
-	            .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") // o image/png se necessario
-	            .body(imageBytes);
+		Author author = authorService.findById(id);
+		if (author == null || author.getImage() == null) {
+			return ResponseEntity.notFound().build();
+		}
+		byte[] imageBytes = author.getImage().getImage();  
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_TYPE, "image/jpeg") // o image/png se necessario
+				.body(imageBytes);
 	}
 
 	@GetMapping(value = "/authors") 
 	public String showAuthors(@RequestParam(required=false) String search, Model model) {
-		
+
 		if(search!=null && !search.trim().isEmpty()) {
 			model.addAttribute("authors", this.authorService.findByTitleContaining(search));
 			model.addAttribute("searchQuery", search);
@@ -49,30 +53,55 @@ public class AuthorController {
 		{
 			model.addAttribute("authors", this.authorService.getAllAuthors());
 		}
-		
+
 		return "authors.html";
 	}
-	
+
 	@GetMapping(value = "/author/{id}") 
 	public String showAuthor(@PathVariable Long id, Model model) {
 		model.addAttribute("author", this.authorService.findById(id));
 		return "author.html";
 	}
 
-	@GetMapping("/formNewAuthor")
+	@GetMapping("/admin/formNewAuthor")
 	public String formNewAuthor(Model model) {
-	    model.addAttribute("author", new Author());
-	    return "formNewAuthor.html";
+		model.addAttribute("author", new Author());
+		return "/admin/formNewAuthor.html";
 	}
 
-	@PostMapping("/addAuthor")
+	//Get mapping della pagina che mostra il manage degli autori
+	@GetMapping(value = "/admin/manageAuthors") 
+	public String manageAuthors(Model model) {
+
+		model.addAttribute("reviewNumber", this.reviewService.countReviews());
+		model.addAttribute("authorNumber", this.authorService.countAuthors());
+		model.addAttribute("bookNumber", this.bookService.countBooks());
+		model.addAttribute("authors", this.authorService.getAllAuthors());
+
+
+		return "/admin/manageAuthors.html";
+	}
+
+	@GetMapping(value = "/admin/manageAuthor/{authorId}")
+	public String manageAuthor(@PathVariable("authorId") Long authorId, Model model) {
+		model.addAttribute("author", this.authorService.findById(authorId));
+		return "/admin/manageAuthor.html";
+	}
+
+	@PostMapping("/admin/authorDelete/{authorId}")
+	public String authorDelete(@PathVariable("authorId") Long authorId) {
+		this.authorService.deleteById(authorId);
+		return "redirect:/admin/manageAuthors";
+	}
+
+	@PostMapping("/admin/addAuthor")
 	public String addAuthor(@Valid @ModelAttribute("author") Author author, BindingResult bindingResult, @RequestParam("imageFile") MultipartFile imageFile, Model model) throws IOException {
 
 		if (bindingResult.hasErrors()) { // sono emersi errori nel binding
-			
-			return "formNewAuthor.html";
+
+			return "/admin/formNewAuthor.html";
 		} else {                         // NON sono emersi errori nel binding
-			
+
 
 			if (!imageFile.isEmpty()) {
 				Image image = new Image();
@@ -80,7 +109,7 @@ public class AuthorController {
 				author.setImage(image);
 			}
 			this.authorService.save(author);
-			return "redirect:/authors";
+			return "redirect:/admin/manageAuthors";
 		}
 
 	}

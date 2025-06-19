@@ -34,4 +34,12 @@ public class BookService {
 		return bookRepository.findByTitleContaining(keyword);
 	}
 	
+	public Long countBooks() {
+		return bookRepository.count();
+	}
+	
+	public void deleteById(Long bookId) {
+		bookRepository.deleteById(bookId);
+	}
+	
 }

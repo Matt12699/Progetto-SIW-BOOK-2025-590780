@@ -41,8 +41,9 @@ public class Book {
     @Max(2025)
 	private Integer year;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 1000)
 	@NotBlank
+	@Size(min=2, max=1000)
 	private String description;
 
 	@Lob

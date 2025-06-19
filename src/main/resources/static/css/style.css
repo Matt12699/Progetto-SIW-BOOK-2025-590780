@@ -403,6 +403,49 @@ label {
     transform: translateY(0);
 }
 
+.error {
+    display: block;
+    color: #dc3545;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background-color: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.2);
+    border-radius: 0.375rem;
+    border-left: 4px solid #dc3545;
+    position: relative;
+    animation: errorSlideIn 0.3s ease-out;
+}
+
+/* Icona di errore */
+.error::before {
+    content: "⚠";
+    font-size: 1rem;
+    margin-right: 0.5rem;
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Animazione di entrata */
+@keyframes errorSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Effetto hover per evidenziare l'errore */
+.error:hover {
+    background-color: rgba(220, 53, 69, 0.15);
+    border-color: rgba(220, 53, 69, 0.3);
+    transition: all 0.2s ease;
+}
+
 /* ==========================================
    RESPONSIVE BREAKPOINTS GENERALI
    ========================================== */

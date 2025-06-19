@@ -119,7 +119,7 @@
     <div class="form-container">
         <h1 class="form-title text-center">Insert a new Book</h1>
 
-        <form th:action="@{/addBook}" method="POST" enctype="multipart/form-data">
+        <form th:action="@{/admin/addBook}" method="POST" enctype="multipart/form-data">
             <!-- Title field -->
             <div class="form-group mb-3">
                 <label for="titleInput" class="form-label">Title</label>
@@ -139,8 +139,8 @@
             <!-- Description field -->
             <div class="form-group mb-3">
                 <label for="descriptionInput" class="form-label">Description</label>
-                <input type="text" class="form-control custom-input" id="descriptionInput" th:field="${book.description}"
-                    placeholder="Description" />
+                <textarea class="form-control custom-input" id="descriptionInput" th:field="${book.description}"
+                    placeholder="Description" rows="6"></textarea>
                 <div class="error" th:if="${#fields.hasErrors('book.description')}" th:errors="${book.description}">
                 </div>
             </div>

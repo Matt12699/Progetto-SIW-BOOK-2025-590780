@@ -35,4 +35,12 @@ public class AuthorService {
 	public List<Author> findByTitleContaining(String keyword) {
 		return authorRepository.findByTitleContaining(keyword);
 	}
+	
+	public Long countAuthors() {
+		return authorRepository.count();
+	}
+	
+	public void deleteById(Long authorId) {
+		this.authorRepository.deleteById(authorId);
+	}
 }

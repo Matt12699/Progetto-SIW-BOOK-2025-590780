@@ -64,33 +64,58 @@ public class BookController {
 	//Get mapping della pagina che mostra i libri
 	@GetMapping(value = "/books") 
 	public String showBooks(@RequestParam(required=false) String search, Model model) {
-		
+
 		if(search!=null && !search.trim().isEmpty()) {
 			model.addAttribute("books", this.bookService.findByTitleContaining(search));
 			model.addAttribute("searchQuery", search);
 		}else {
 			model.addAttribute("books", this.bookService.getAllBooks());
 		}
-		
+
 		return "books.html";
 	}
 
+	//Get mapping della pagina che mostra il manage dei libri
+	@GetMapping(value = "/admin/manageBooks") 
+	public String manageBooks(Model model) {
+
+		model.addAttribute("reviewNumber", this.reviewService.countReviews());
+		model.addAttribute("authorNumber", this.authorService.countAuthors());
+		model.addAttribute("bookNumber", this.bookService.countBooks());
+		model.addAttribute("books", this.bookService.getAllBooks());
+
+
+		return "/admin/manageBooks.html";
+	}
+	
+	@GetMapping(value = "/admin/manageBook/{bookId}")
+	public String manageBook(@PathVariable("bookId") Long bookId, Model model) {
+		model.addAttribute("book", this.bookService.findById(bookId));
+		return "/admin/manageBook.html";
+	}
+
 	//Get mapping del form per l'ineserimento di un libro
-	@GetMapping("/formNewBook")
+	@GetMapping("/admin/formNewBook")
 	public String formNewBook(Model model) {
 		model.addAttribute("book", new Book());
 		model.addAttribute("authors", this.authorService.getAllAuthors());
-		return "formNewBook.html";
+		return "/admin/formNewBook.html";
+	}
+	
+	@PostMapping("/admin/bookDelete/{bookId}")
+	public String bookDelete(@PathVariable("bookId") Long bookId) {
+		this.bookService.deleteById(bookId);
+		return "redirect:/admin/manageBooks";
 	}
 
 	//Post mapping per l'inserimento di un libro
-	@PostMapping("/addBook")
+	@PostMapping("/admin/addBook")
 	public String addBook(@Valid @ModelAttribute("book") Book book, BindingResult bindingResult, @RequestParam("imageFile") MultipartFile imageFile, @RequestParam(value = "authorIds", required = false) List<Long> authorIds, Model model) throws IOException {
 
 		if (bindingResult.hasErrors()) { // sono emersi errori nel binding
 			// Sennò gli autori non si vedrebbero
 			model.addAttribute("authors", this.authorService.getAllAuthors());
-			return "formNewBook.html";
+			return "/admin/formNewBook.html";
 		} else {                         // NON sono emersi errori nel binding
 
 
@@ -112,7 +137,7 @@ public class BookController {
 			bookService.save(book);
 
 			// Reindirizza alla lista dei libri
-			return "redirect:/books";
+			return "redirect:/admin/manageBooks";
 
 		}
 
@@ -123,7 +148,8 @@ public class BookController {
 	public String addReview(@Valid @ModelAttribute("review") Review review, BindingResult bindingResult, @ModelAttribute("currentUser") User user, @PathVariable("bookId") Long bookId ,Model model) throws IOException {
 
 		if (bindingResult.hasErrors()) { // sono emersi errori nel binding
-			return "redirect:/book/{bookId}";
+			model.addAttribute("book", bookService.findById(bookId));
+			return "book.html";
 		} else {                         // NON sono emersi errori nel binding
 
 			// Salva la review

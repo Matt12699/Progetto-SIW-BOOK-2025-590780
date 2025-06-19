@@ -50,10 +50,10 @@
 
 					<!-- Admin Area -->
 					<li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
-						<a class="nav-link" aria-current="page" href="/manageBooks">Manage Books</a>
+						<a class="nav-link" aria-current="page" href="/admin/manageBooks">Manage Books</a>
 					</li>
 					<li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
-						<a class="nav-link" href="/manageAuthors">Manage Authors</a>
+						<a class="nav-link" href="/admin/manageAuthors">Manage Authors</a>
 					</li>
 					
 					<!-- Logout -->
@@ -138,13 +138,7 @@
 	            </div>
 	        </div>
 			</div>
-			<!-- Add New Book Button -->
-			<div class="text-center mt-4">
-			            <a href="/formNewBook" class="btn btn-primary-custom me-2">
-			                <i class="fas fa-plus me-2"></i>Add New Book
-			            </a>
-						</div>
-					</div>
+			</div>
 	
 	<!--Footer-->
 	<footer class="footer text-white mt-auto">
@@ -159,6 +153,8 @@
 	        <ul class="list-unstyled">
 	          <li><a href="/books" class="footer-link">Books</a></li>
 			  <li><a href="/authors" class="footer-link">Authors</a></li>
+			  <li><a href="/admin/manageBooks" class="footer-link" sec:authorize="hasAuthority('ADMIN')">Manage Books</a></li>
+			  <li><a href="/admin/manageAuthors" class="footer-link" sec:authorize="hasAuthority('ADMIN')">Manage Authors</a></li>
 	        </ul>
 	      </div>
 	      <div class="col-md-4 mb-3">

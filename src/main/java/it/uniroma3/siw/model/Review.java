@@ -32,9 +32,9 @@ public class Review {
 	@Max(5)
 	private Integer rating;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 500)
 	@NotBlank
-	@Size(min=2, max=100)
+	@Size(min=2, max=500)
 	private String description;
 	
 	@ManyToOne

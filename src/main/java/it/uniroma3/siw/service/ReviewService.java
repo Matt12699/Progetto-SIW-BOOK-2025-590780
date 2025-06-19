@@ -14,4 +14,8 @@ public class ReviewService {
 	public void save(Review review) {
 		this.reviewRepository.save(review);
 	}
+	
+	public Long countReviews() {
+		return this.reviewRepository.count();
+	}
 }

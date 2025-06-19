@@ -53,7 +53,7 @@ public class Author {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Image image;
 	
-	@ManyToMany(mappedBy = "authors")
+	@ManyToMany(mappedBy = "authors" ,cascade = CascadeType.REMOVE)
 	private List<Book> books;
 
 	public Long getId() {
