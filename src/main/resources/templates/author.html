@@ -110,6 +110,7 @@
 								<h4 class="available-books-title">Available books by the author</h4>
 								<div class="meta-item">
 									<i class="fas fa-book"></i>
+									<p th:if="${author.books.isEmpty()}">There are no Books available</p>
 									<span class="book-author" th:each="book, bookStat : ${author.books}"
 										th:if="${author.books != null}">
 										<a th:href="'/book/' + ${book.id}" class="book-author">

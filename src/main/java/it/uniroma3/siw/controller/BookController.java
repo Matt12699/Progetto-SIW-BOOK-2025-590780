@@ -87,11 +87,66 @@ public class BookController {
 
 		return "/admin/manageBooks.html";
 	}
-	
+
 	@GetMapping(value = "/admin/manageBook/{bookId}")
 	public String manageBook(@PathVariable("bookId") Long bookId, Model model) {
 		model.addAttribute("book", this.bookService.findById(bookId));
 		return "/admin/manageBook.html";
+	}
+
+	@GetMapping(value = "/admin/formEditBook/{bookId}")
+	public String formEditBook(@PathVariable("bookId") Long bookId, Model model) {
+		model.addAttribute("book", this.bookService.findById(bookId));
+		model.addAttribute("authors", this.authorService.getAllAuthors());
+		return "/admin/formEditBook.html";
+	}
+
+	//Post mapping per l'edit di un libro
+	@PostMapping("/admin/editBook/{bookId}")
+	public String editBook(@Valid @ModelAttribute("book") Book formBook, BindingResult bindingResult, @RequestParam("imageFile") MultipartFile imageFile, @RequestParam(value = "authorIds", required = false) List<Long> authorIds, @PathVariable("bookId") Long bookId, Model model) throws IOException {
+
+		if (authorIds == null || authorIds.isEmpty()) {
+
+			model.addAttribute("authorError", "Book must have at least one author");
+		}
+		if(imageFile.isEmpty()) {
+			model.addAttribute("imageError", "Book must have an image");
+		}
+
+		if (bindingResult.hasErrors() || model.containsAttribute("authorError") || model.containsAttribute("imageError")) { // sono emersi errori nel binding
+			// Sennò gli autori non si vedrebbero
+			model.addAttribute("book", formBook);
+			model.addAttribute("authors", this.authorService.getAllAuthors());
+			return "/admin/formEditBook.html";
+		} else {                         // NON sono emersi errori nel binding
+
+			Book existingBook = this.bookService.findById(bookId);
+			
+			// Aggiorna i campi del libro esistente
+	        existingBook.setTitle(formBook.getTitle());
+	        existingBook.setYear(formBook.getYear());
+	        existingBook.setDescription(formBook.getDescription());
+
+			Image image = new Image();
+			image.setImage(imageFile.getBytes());
+			existingBook.setImage(image);
+
+
+
+			Iterable<Author> authorsIterable = authorService.findAllById(authorIds);
+			Set<Author> authors = new HashSet<>();
+			authorsIterable.forEach(authors::add);
+			existingBook.setAuthors(authors);
+
+
+			// Salva il libro con autori e immagine
+			bookService.save(existingBook);
+
+			// Reindirizza alla lista dei libri
+			return "redirect:/admin/manageBooks";
+
+		}
+
 	}
 
 	//Get mapping del form per l'ineserimento di un libro
@@ -101,7 +156,8 @@ public class BookController {
 		model.addAttribute("authors", this.authorService.getAllAuthors());
 		return "/admin/formNewBook.html";
 	}
-	
+
+
 	@PostMapping("/admin/bookDelete/{bookId}")
 	public String bookDelete(@PathVariable("bookId") Long bookId) {
 		this.bookService.deleteById(bookId);
@@ -112,26 +168,34 @@ public class BookController {
 	@PostMapping("/admin/addBook")
 	public String addBook(@Valid @ModelAttribute("book") Book book, BindingResult bindingResult, @RequestParam("imageFile") MultipartFile imageFile, @RequestParam(value = "authorIds", required = false) List<Long> authorIds, Model model) throws IOException {
 
-		if (bindingResult.hasErrors()) { // sono emersi errori nel binding
+		if (authorIds == null || authorIds.isEmpty()) {
+
+			model.addAttribute("authorError", "Book must have at least one author");
+		}
+		if(imageFile.isEmpty()) {
+			model.addAttribute("imageError", "Book must have an image");
+		}
+
+
+		if (bindingResult.hasErrors() || model.containsAttribute("authorError") || model.containsAttribute("imageError")) { // sono emersi errori nel binding
 			// Sennò gli autori non si vedrebbero
 			model.addAttribute("authors", this.authorService.getAllAuthors());
 			return "/admin/formNewBook.html";
 		} else {                         // NON sono emersi errori nel binding
 
 
-			if (!imageFile.isEmpty()) {
-				Image image = new Image();
-				image.setImage(imageFile.getBytes());
-				book.setImage(image);
-			}
 
-			// Associa autori al libro PRIMA di salvare, se possibile
-			if (authorIds != null && !authorIds.isEmpty()) {
-				Iterable<Author> authorsIterable = authorService.findAllById(authorIds);
-				Set<Author> authors = new HashSet<>();
-				authorsIterable.forEach(authors::add);
-				book.setAuthors(authors);
-			}
+			Image image = new Image();
+			image.setImage(imageFile.getBytes());
+			book.setImage(image);
+
+
+
+			Iterable<Author> authorsIterable = authorService.findAllById(authorIds);
+			Set<Author> authors = new HashSet<>();
+			authorsIterable.forEach(authors::add);
+			book.setAuthors(authors);
+
 
 			// Salva il libro con autori e immagine
 			bookService.save(book);

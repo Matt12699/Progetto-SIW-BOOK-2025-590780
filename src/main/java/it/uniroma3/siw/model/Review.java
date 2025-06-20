@@ -2,6 +2,8 @@ package it.uniroma3.siw.model;
 
 import java.util.Objects;
 
+import org.hibernate.annotations.CascadeType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,7 +39,7 @@ public class Review {
 	@Size(min=2, max=500)
 	private String description;
 	
-	@ManyToOne
+	@ManyToOne 
 	private User user;
 	
 	@ManyToOne

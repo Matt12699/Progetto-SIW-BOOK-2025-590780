@@ -1,6 +1,9 @@
 package it.uniroma3.siw.controller;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -93,21 +96,66 @@ public class AuthorController {
 		this.authorService.deleteById(authorId);
 		return "redirect:/admin/manageAuthors";
 	}
+	
+	@GetMapping(value = "/admin/formEditAuthor/{authorId}")
+	public String formEditAuthor(@PathVariable("authorId") Long authorId, Model model) {
+		model.addAttribute("author", this.authorService.findById(authorId));
+		return "/admin/formEditAuthor.html";
+	}
+	
+	//Post mapping per l'edit di un libro
+		@PostMapping("/admin/editAuthor/{authorId}")
+		public String editAuthor(@Valid @ModelAttribute("author") Author formAuthor, BindingResult bindingResult, @RequestParam("imageFile") MultipartFile imageFile, @PathVariable("authorId") Long authorId, Model model) throws IOException {
+
+			if(imageFile.isEmpty()) {
+				model.addAttribute("imageError", "Author must have an image");
+			}
+
+			if (bindingResult.hasErrors() || model.containsAttribute("imageError")) { // sono emersi errori nel binding
+				// Sennò gli autori non si vedrebbero
+				model.addAttribute("author", formAuthor);
+				return "/admin/formEditAuthor.html";
+			} else {                         // NON sono emersi errori nel binding
+
+				Author existingAuthor = this.authorService.findById(authorId);
+				
+				existingAuthor.setName(formAuthor.getName());
+				existingAuthor.setSurname(formAuthor.getSurname());
+				existingAuthor.setDateOfBirth(formAuthor.getDateOfBirth());
+				existingAuthor.setDateOfDeath(formAuthor.getDateOfDeath());
+				existingAuthor.setNationality(formAuthor.getNationality());
+
+				Image image = new Image();
+				image.setImage(imageFile.getBytes());
+				existingAuthor.setImage(image);
+
+
+				authorService.save(existingAuthor);
+
+				
+				return "redirect:/admin/manageAuthors";
+
+			}
+
+		}
 
 	@PostMapping("/admin/addAuthor")
 	public String addAuthor(@Valid @ModelAttribute("author") Author author, BindingResult bindingResult, @RequestParam("imageFile") MultipartFile imageFile, Model model) throws IOException {
 
-		if (bindingResult.hasErrors()) { // sono emersi errori nel binding
+		if(imageFile.isEmpty()) {
+			model.addAttribute("imageError", "Author must have an image");
+		}
+		if (bindingResult.hasErrors() || model.containsAttribute("imageError")) { // sono emersi errori nel binding
 
 			return "/admin/formNewAuthor.html";
 		} else {                         // NON sono emersi errori nel binding
 
 
-			if (!imageFile.isEmpty()) {
-				Image image = new Image();
-				image.setImage(imageFile.getBytes());
-				author.setImage(image);
-			}
+
+			Image image = new Image();
+			image.setImage(imageFile.getBytes());
+			author.setImage(image);
+
 			this.authorService.save(author);
 			return "redirect:/admin/manageAuthors";
 		}
