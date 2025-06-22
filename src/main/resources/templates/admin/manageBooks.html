@@ -63,6 +63,14 @@
 						<a class="nav-link" href="/logout">Logout</a>
 					</li>
 
+					<!-- User Area -->
+					<li class="nav-item user-area" sec:authorize="!hasAuthority('ADMIN') && isAuthenticated()">
+						<a class="nav-link" href="/userArea">
+							<i class="fa fa-user user-icon"></i>
+							User Area
+						</a>
+					</li>
+
 					<!-- Login and Signup -->
 					<li class="nav-item" sec:authorize="!isAuthenticated()">
 						<a class="nav-link" href="/login">Login</a>
@@ -141,15 +149,15 @@
 						<img th:src="@{/book/image/{id}(id=${book.id})}" class="book-cover" alt="Book cover" />
 						<div class="book-overlay"></div>
 						<div class="book-actions d-flex flex-column gap-2">
-				
-						    <form th:action="@{'/admin/bookDelete'+'/'+${book.id}}" method="post" class="d-flex">
-						        <button type="submit" class="btn btn-primary-custom w-100">
-						            <i class="fas fa-trash me-2"></i>Delete
-						        </button>
-						    </form>
-						    <a th:href="@{'/admin/manageBook'+'/'+${book.id}}" class="btn btn-primary-custom">
-						        <i class="fas fa-edit me-2"></i>Manage
-						    </a>
+
+							<form th:action="@{'/admin/bookDelete'+'/'+${book.id}}" method="post" class="d-flex">
+								<button type="submit" class="btn btn-primary-custom w-100">
+									<i class="fas fa-trash me-2"></i>Delete
+								</button>
+							</form>
+							<a th:href="@{'/admin/manageBook'+'/'+${book.id}}" class="btn btn-primary-custom">
+								<i class="fas fa-edit me-2"></i>Manage
+							</a>
 						</div>
 					</div>
 					<div class="book-info">
@@ -184,6 +192,8 @@
 					<ul class="list-unstyled">
 						<li><a href="/books" class="footer-link">Books</a></li>
 						<li><a href="/authors" class="footer-link">Authors</a></li>
+						<li><a href="/userArea" class="footer-link" 
+													sec:authorize="!hasAuthority('ADMIN') && isAuthenticated()">User Area</a></li>
 						<li><a href="/admin/manageBooks" class="footer-link"
 								sec:authorize="hasAuthority('ADMIN')">Manage Books</a></li>
 						<li><a href="/admin/manageAuthors" class="footer-link"

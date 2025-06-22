@@ -14,7 +14,8 @@
 
 	<!-- Google Fonts -->
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap"
+		rel="stylesheet">
 
 	<!-- Custom CSS -->
 	<link rel="stylesheet" href="/css/style.css" />
@@ -55,10 +56,18 @@
 					<li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
 						<a class="nav-link" href="/admin/manageAuthors">Manage Authors</a>
 					</li>
-					
+
 					<!-- Logout -->
 					<li class="nav-item" sec:authorize="isAuthenticated()">
 						<a class="nav-link" href="/logout">Logout</a>
+					</li>
+
+					<!-- User Area -->
+					<li class="nav-item user-area" sec:authorize="!hasAuthority('ADMIN') && isAuthenticated()">
+						<a class="nav-link" href="/userArea">
+							<i class="fa fa-user user-icon"></i>
+							User Area
+						</a>
 					</li>
 
 					<!-- Login and Signup -->
@@ -72,102 +81,108 @@
 			</div>
 		</div>
 	</nav>
-	
+
 	<!-- Hero Section -->
 	<section class="books-hero">
 		<div class="container">
 			<div class="books-hero-content animate-on-scroll">
 				<h1><i class="fas fa-book-reader me-3"></i>Discover Amazing Books</h1>
-				<p>Explore our vast collection of literary masterpieces, from timeless classics to contemporary bestsellers. Every book tells a story, and every story opens a new world.</p>
-				
+				<p>Explore our vast collection of literary masterpieces, from timeless classics to contemporary
+					bestsellers. Every book tells a story, and every story opens a new world.</p>
+
 				<!-- Search Section -->
 				<form method="GET" action="/books" class="search-section animate-on-scroll">
-				    <div class="search-container">
-				        <div class="search-box">
-				            <i class="fas fa-search search-icon"></i>
-				            <input type="text" name="search" class="form-control search-input" 
-				                   placeholder="Search for books..." th:value="${searchQuery}">
-				        </div>
-				        <button type="submit" class="btn btn-primary-custom search-button">
-				            <i class="fas fa-search me-2"></i>Search
-				        </button>
-				    </div>
+					<div class="search-container">
+						<div class="search-box">
+							<i class="fas fa-search search-icon"></i>
+							<input type="text" name="search" class="form-control search-input"
+								placeholder="Search for books..." th:value="${searchQuery}">
+						</div>
+						<button type="submit" class="btn btn-primary-custom search-button">
+							<i class="fas fa-search me-2"></i>Search
+						</button>
+					</div>
 				</form>
 				<!-- Mostra messaggio se c'è una ricerca attiva -->
 				<div th:if="${searchQuery != null}" class="search-results-info">
-				    <p>Showing results for: "<strong th:text="${searchQuery}"></strong>"</p>
-				    <a href="/books" class="btn btn-primary-custom">Clear search</a>
+					<p>Showing results for: "<strong th:text="${searchQuery}"></strong>"</p>
+					<a href="/books" class="btn btn-primary-custom">Clear search</a>
 				</div>
 			</div>
-			</div>
+		</div>
 		</div>
 	</section>
 
 	<div th:if="${books.isEmpty()}">
-				<div class="alert alert-warning">There are no Books in the system</div>
+		<div class="alert alert-warning">There are no Books in the system</div>
 	</div>
-	
+
 	<!-- Books Section -->
 	<div class="books-container" th:if="${books != null and !books.isEmpty()}">
-	    <div class="container">
-	        <div class="section-title animate-on-scroll" th:if="${searchQuery==null}">
-	            <h2>Featured Books</h2>
-	            <p>Handpicked selections from our extensive library, featuring both beloved classics and exciting new releases</p>
-	        </div>
+		<div class="container">
+			<div class="section-title animate-on-scroll" th:if="${searchQuery==null}">
+				<h2>Featured Books</h2>
+				<p>Handpicked selections from our extensive library, featuring both beloved classics and exciting new
+					releases</p>
+			</div>
 
-	        <div class="books-grid">
-	            <!-- Book Cards -->
-	            <div th:each="book : ${books}" class="book-card animate-on-scroll">
-	                <div class="book-cover-container">
-	                    <img th:src="@{/book/image/{id}(id=${book.id})}" class="book-cover" alt="Book cover" />
-	                    <div class="book-overlay"></div>
-	                    <div class="book-actions">
+			<div class="books-grid">
+				<!-- Book Cards -->
+				<div th:each="book : ${books}" class="book-card animate-on-scroll">
+					<div class="book-cover-container">
+						<img th:src="@{/book/image/{id}(id=${book.id})}" class="book-cover" alt="Book cover" />
+						<div class="book-overlay"></div>
+						<div class="book-actions">
 							<a th:href="@{'/book'+'/'+${book.id}}" class="btn btn-primary-custom me-2">
-							    <i class="fas fa-eye me-2"></i>View Details
+								<i class="fas fa-eye me-2"></i>View Details
 							</a>
-	                    </div>
-	                </div>
-	                <div class="book-info">
-	                    <h3 class="book-title">[[${book.title}]]</h3>
-	                    <p class="book-author">
-	                        by <span th:each="author, authorStat : ${book.authors}" th:if="${book.authors != null}">
-	                            [[${author.name}]] [[${author.surname}]]<span th:if="${!authorStat.last}">, </span>
-	                        </span>
-	                    </p>
-	                </div>
-	            </div>
-	        </div>
+						</div>
+					</div>
+					<div class="book-info">
+						<h3 class="book-title">[[${book.title}]]</h3>
+						<p class="book-author">
+							by <span th:each="author, authorStat : ${book.authors}" th:if="${book.authors != null}">
+								[[${author.name}]] [[${author.surname}]]<span th:if="${!authorStat.last}">, </span>
+							</span>
+						</p>
+					</div>
+				</div>
 			</div>
-			</div>
-	
+		</div>
+	</div>
+
 	<!--Footer-->
 	<footer class="footer text-white mt-auto">
-	  <div class="container py-4 text-center">
-	    <div class="row">
-	      <div class="col-md-4 mb-3">
-	        <h5 class="fw-bold">SiwBooks</h5>
-	        <p class="small">Discover, enjoy, and explore thousands of books from your favorite authors!</p>
-	      </div>
-	      <div class="col-md-4 mb-3">
-	        <h6 class="fw-bold">Navigation</h6>
-	        <ul class="list-unstyled">
-	          <li><a href="/books" class="footer-link">Books</a></li>
-			  <li><a href="/authors" class="footer-link">Authors</a></li>
-			  <li><a href="/admin/manageBooks" class="footer-link" sec:authorize="hasAuthority('ADMIN')">Manage Books</a></li>
-			  <li><a href="/admin/manageAuthors" class="footer-link" sec:authorize="hasAuthority('ADMIN')">Manage Authors</a></li>
-	        </ul>
-	      </div>
-	      <div class="col-md-4 mb-3">
-	        <h6 class="fw-bold">Contacts</h6>
-	        <p class="small mb-1">Email: info@siwbooks.com</p>
-	        <p class="small">Phone number: +39 0123 456789</p>
-	      </div>
-	    </div>
-	    <hr class="border-light" />
-	    <p class="small mb-0">© 2025 SiwBooks - EU</p>
-	  </div>
+		<div class="container py-4 text-center">
+			<div class="row">
+				<div class="col-md-4 mb-3">
+					<h5 class="fw-bold">SiwBooks</h5>
+					<p class="small">Discover, enjoy, and explore thousands of books from your favorite authors!</p>
+				</div>
+				<div class="col-md-4 mb-3">
+					<h6 class="fw-bold">Navigation</h6>
+					<ul class="list-unstyled">
+						<li><a href="/books" class="footer-link">Books</a></li>
+						<li><a href="/authors" class="footer-link">Authors</a></li>
+						<li><a href="/userArea" class="footer-link" 
+													sec:authorize="!hasAuthority('ADMIN') && isAuthenticated()">User Area</a></li>
+						<li><a href="/admin/manageBooks" class="footer-link"
+								sec:authorize="hasAuthority('ADMIN')">Manage Books</a></li>
+						<li><a href="/admin/manageAuthors" class="footer-link"
+								sec:authorize="hasAuthority('ADMIN')">Manage Authors</a></li>
+					</ul>
+				</div>
+				<div class="col-md-4 mb-3">
+					<h6 class="fw-bold">Contacts</h6>
+					<p class="small mb-1">Email: info@siwbooks.com</p>
+					<p class="small">Phone number: +39 0123 456789</p>
+				</div>
+			</div>
+			<hr class="border-light" />
+			<p class="small mb-0">© 2025 SiwBooks - EU</p>
+		</div>
 	</footer>
-	
+
 	<script>
 		// Scroll animations
 		const observerOptions = {
@@ -230,14 +245,14 @@
 		// Search functionality
 		const searchInput = document.querySelector('.search-input');
 		const filterTags = document.querySelectorAll('.filter-tag');
-		
-		searchInput.addEventListener('input', function() {
+
+		searchInput.addEventListener('input', function () {
 			// Add search functionality here
 			console.log('Searching for:', this.value);
 		});
-		
+
 		filterTags.forEach(tag => {
-			tag.addEventListener('click', function() {
+			tag.addEventListener('click', function () {
 				// Add filter functionality here
 				console.log('Filter selected:', this.textContent);
 			});
@@ -252,7 +267,7 @@
 					const finalNumber = target.textContent.replace(/[^\d]/g, '');
 					let currentNumber = 0;
 					const increment = finalNumber / 50;
-					
+
 					const counter = setInterval(() => {
 						currentNumber += increment;
 						if (currentNumber >= finalNumber) {
@@ -265,7 +280,7 @@
 				}
 			});
 		});
-		
+
 		statNumbers.forEach(stat => {
 			statsObserver.observe(stat);
 		});

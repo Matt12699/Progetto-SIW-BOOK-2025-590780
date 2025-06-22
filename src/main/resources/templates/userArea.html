@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Welcome [[${currentUser.credentials.username}]] - SiwBooks, online Library</title>
+
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap"
+		rel="stylesheet">
+
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="/css/style.css" />
+	<link rel="stylesheet" href="/css/showAll.css" />
+	<link rel="stylesheet" href="/css/manage.css" />
+	<link rel="stylesheet" href="/css/review.css" />
+	<link rel="stylesheet" href="/css/userArea.css" />
+</head>
+
+<body>
+	<!-- Bootstrap JS -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm">
+		<div class="container-fluid">
+			<a class="navbar-brand d-flex align-items-center" href="/">
+				<i class="fas fa-book-open me-2"></i>
+				SiwBooks
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+				<ul class="navbar-nav">
+					<!-- Public Link -->
+					<li class="nav-item">
+						<a class="nav-link" aria-current="page" href="/">Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/books">Books</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/authors">Authors</a>
+					</li>
+
+					<!-- Admin Area -->
+					<li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+						<a class="nav-link active" aria-current="page" href="/admin/manageBooks">Manage Books</a>
+					</li>
+					<li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+						<a class="nav-link" href="/admin/manageAuthors">Manage Authors</a>
+					</li>
+
+					<!-- Logout -->
+					<li class="nav-item" sec:authorize="isAuthenticated()">
+						<a class="nav-link" href="/logout">Logout</a>
+					</li>
+
+					<!-- User Area -->
+					<li class="nav-item user-area" sec:authorize="!hasAuthority('ADMIN') && isAuthenticated()">
+						<a class="nav-link" href="/userArea">
+							<i class="fa fa-user user-icon"></i>
+							User Area
+						</a>
+					</li>
+
+					<!-- Login and Signup -->
+					<li class="nav-item" sec:authorize="!isAuthenticated()">
+						<a class="nav-link" href="/login">Login</a>
+					</li>
+					<li class="nav-item" sec:authorize="!isAuthenticated()">
+						<a class="nav-link" href="/register">Sign-up</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Hero Section -->
+	<section class="books-hero user-hero">
+		<div class="container">
+			<div class="books-hero-content animate-on-scroll">
+				<div class="welcome-header">
+					<div class="user-avatar-large">
+						<span th:text="${#strings.substring(currentUser.credentials.username, 0, 1)}">U</span>
+					</div>
+					<div class="welcome-text">
+						<h1>Welcome back, <span class="username">[[${currentUser.credentials.username}]]</span>!</h1>
+						<p class="welcome-subtitle">Your personal library awaits</p>
+					</div>
+				</div>
+
+				<!-- Stats Container -->
+				<div class="stats">
+					<div class="stats-container">
+						<div class="stat-item enhanced" data-stat="Reviews">
+							<div class="stat-icon">
+								<i class="fas fa-star"></i>
+							</div>
+							<div class="stat-content">
+								<span class="stat-number">[[${currentUser.writtenReviews.size()}]]</span>
+								<span class="stat-label">Written Reviews</span>
+							</div>
+							<div class="stat-glow"></div>
+						</div>
+						<div class="stat-item enhanced" data-stat="Average Review rating">
+							<div class="stat-icon">
+								<i class="fas fa-chart-line"></i>
+							</div>
+							<div class="stat-content">
+								<span class="stat-number">[[${#numbers.formatDecimal(avgRating, 1, 2)}]]</span>
+								<span class="stat-label">Average Rating</span>
+							</div>
+							<div class="stat-glow"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Main Content Area -->
+	<div class="main-content-area">
+		<div class="container-fluid">
+			<div class="row g-4">
+				<!-- Left Column - Reviews -->
+				<div class="col-lg-6">
+					<div class="content-section">
+						<div class="section-header">
+							<h3><i class="fas fa-comments me-2"></i>Your Reviews</h3>
+							<span class="review-count" th:text="${currentUser.writtenReviews.size()}"></span>
+						</div>
+
+						<!-- No Reviews State -->
+						<div th:if="${currentUser.writtenReviews.isEmpty()}" class="no-reviews-enhanced">
+							<div class="no-reviews-icon">
+								<i class="fas fa-comment-slash"></i>
+							</div>
+							<h4>No reviews yet</h4>
+							<p>Start exploring books and share your thoughts with the community!</p>
+							<a href="/books" class="btn btn-primary-custom">
+								<i class="fas fa-book me-2"></i>Browse Books
+							</a>
+						</div>
+
+						<!-- Reviews Container -->
+						<div th:if="${!currentUser.writtenReviews.isEmpty()}" class="reviews-container-enhanced">
+							<div th:each="review : ${currentUser.writtenReviews}" class="review-card-enhanced">
+								<!-- Book Info Strip -->
+								<div class="review-book-info">
+									<div class="book-mini-cover">
+										<img th:src="@{/book/image/{id}(id=${review.book.id})}" alt="Book cover" />
+									</div>
+									<div class="book-mini-info">
+										<h6 th:text="${review.book.title}">Book Title</h6>
+										<p class="book-authors" th:each="author, authorStat : ${review.book.authors}">
+											[[${author.name}]] [[${author.surname}]] 
+											<span th:if="${!authorStat.last}">,
+											</span>
+										</p>
+									</div>
+								</div>
+
+								<!-- Review Content -->
+								<div class="review-main-content">
+									<div class="review-header-enhanced">
+										<div class="review-rating-enhanced">
+											<div class="review-stars">
+												<span th:each="i : ${#numbers.sequence(1, review.rating)}"
+													class="review-star filled">★</span>
+												<span th:each="i : ${#numbers.sequence(review.rating + 1, 5)}"
+													class="review-star empty">☆</span>
+											</div>
+											<span class="review-rating-text"
+												th:text="${review.rating} + '/5'">5/5</span>
+										</div>
+										<div class="review-date">
+											<i class="fas fa-calendar-alt"></i>
+											<span>Recently</span>
+										</div>
+									</div>
+
+									<h5 class="review-title-enhanced" th:text="${review.title}">Review Title</h5>
+									<p class="review-description-enhanced" th:text="${review.description}">Review
+										description goes here...</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Right Column - Books -->
+				<div class="col-lg-6">
+					<div class="content-section">
+						<div class="section-header">
+							<h3><i class="fas fa-book me-2"></i>Reviewed Books</h3>
+							<a href="/books" class="view-all-link">
+								View All <i class="fas fa-arrow-right ms-1"></i>
+							</a>
+						</div>
+
+						<!-- No Books State -->
+						<div th:if="${books.isEmpty()}" class="no-books-enhanced">
+							<div class="no-books-icon">
+								<i class="fas fa-book-open"></i>
+							</div>
+							<h4>No books reviewed</h4>
+							<p>Try to review some books</p>
+						</div>
+
+						<!-- Books Container -->
+						<div th:if="${books != null and !books.isEmpty()}" class="books-grid-enhanced">
+							<div th:each="book : ${books}" class="book-card-enhanced animate-on-scroll">
+								<div class="book-cover-container-enhanced">
+									<img th:src="@{/book/image/{id}(id=${book.id})}" class="book-cover-enhanced"
+										alt="Book cover" />
+									<div class="book-overlay-enhanced">
+										<a th:href="@{'/book'+'/'+${book.id}}" class="btn btn-view-details">
+											<i class="fas fa-eye"></i>
+										</a>
+									</div>
+								</div>
+								<div class="book-info-enhanced">
+									<h4 class="book-title-enhanced" th:text="${book.title}">Book Title</h4>
+									<p class="book-author-enhanced">
+										by <span th:each="author, authorStat : ${book.authors}"
+											th:if="${book.authors != null}">
+											[[${author.name}]] [[${author.surname}]]<span th:if="${!authorStat.last}">,
+											</span>
+										</span>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Footer-->
+	<footer class="footer text-white mt-auto">
+		<div class="container py-4 text-center">
+			<div class="row">
+				<div class="col-md-4 mb-3">
+					<h5 class="fw-bold">SiwBooks</h5>
+					<p class="small">Discover, enjoy, and explore thousands of books from your favorite authors!</p>
+				</div>
+				<div class="col-md-4 mb-3">
+					<h6 class="fw-bold">Navigation</h6>
+					<ul class="list-unstyled">
+						<li><a href="/books" class="footer-link">Books</a></li>
+						<li><a href="/authors" class="footer-link">Authors</a></li>
+						<li><a href="/userArea" class="footer-link" 
+													sec:authorize="!hasAuthority('ADMIN') && isAuthenticated()">User Area</a></li>
+						<li><a href="/admin/manageBooks" class="footer-link"
+								sec:authorize="hasAuthority('ADMIN')">Manage Books</a></li>
+						<li><a href="/admin/manageAuthors" class="footer-link"
+								sec:authorize="hasAuthority('ADMIN')">Manage Authors</a></li>
+					</ul>
+				</div>
+				<div class="col-md-4 mb-3">
+					<h6 class="fw-bold">Contacts</h6>
+					<p class="small mb-1">Email: info@siwbooks.com</p>
+					<p class="small">Phone number: +39 0123 456789</p>
+				</div>
+			</div>
+			<hr class="border-light" />
+			<p class="small mb-0">© 2025 SiwBooks - EU</p>
+		</div>
+	</footer>
+
+	<script>
+		// Scroll animations
+		const observerOptions = {
+			threshold: 0.1,
+			rootMargin: '0px 0px -50px 0px'
+		};
+
+		const observer = new IntersectionObserver(function (entries) {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('animate');
+				}
+			});
+		}, observerOptions);
+
+		// Observe all elements with animate-on-scroll class
+		document.querySelectorAll('.animate-on-scroll').forEach(el => {
+			observer.observe(el);
+		});
+
+		// Navbar scroll effect
+		window.addEventListener('scroll', function () {
+			const navbar = document.querySelector('.navbar');
+			if (window.scrollY > 50) {
+				navbar.style.background = 'linear-gradient(135deg, rgba(0,184,148,0.95) 0%, rgba(0,206,201,0.95) 100%)';
+				navbar.style.backdropFilter = 'blur(15px)';
+			} else {
+				navbar.style.background = 'linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%)';
+				navbar.style.backdropFilter = 'blur(10px)';
+			}
+		});
+
+		// Enhanced book card interactions
+		document.querySelectorAll('.book-card-enhanced').forEach(card => {
+			card.addEventListener('mouseenter', function () {
+				this.style.transform = 'translateY(-8px)';
+				const overlay = this.querySelector('.book-overlay-enhanced');
+				if (overlay) {
+					overlay.style.opacity = '1';
+				}
+			});
+
+			card.addEventListener('mouseleave', function () {
+				this.style.transform = 'translateY(0)';
+				const overlay = this.querySelector('.book-overlay-enhanced');
+				if (overlay) {
+					overlay.style.opacity = '0';
+				}
+			});
+		});
+
+		// Review card hover effects
+		document.querySelectorAll('.review-card-enhanced').forEach(card => {
+			card.addEventListener('mouseenter', function () {
+				this.style.transform = 'translateX(5px)';
+			});
+
+			card.addEventListener('mouseleave', function () {
+				this.style.transform = 'translateX(0)';
+			});
+		});
+
+		// Stats counter animation
+		const statNumbers = document.querySelectorAll('.stat-number');
+		const statsObserver = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					const target = entry.target;
+					const finalNumber = parseFloat(target.textContent.replace(',', '.')) || 0;
+					let currentNumber = 0;
+					const increment = Math.max(1, Math.ceil(finalNumber / 30));
+
+					const counter = setInterval(() => {
+						currentNumber += increment;
+						if (currentNumber >= finalNumber) {
+							target.textContent = finalNumber;
+							clearInterval(counter);
+						} else {
+							target.textContent = currentNumber;
+						}
+					}, 50);
+				}
+			});
+		});
+
+		statNumbers.forEach(stat => {
+			statsObserver.observe(stat);
+		});
+
+		// Smooth scrolling for anchor links
+		document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+			anchor.addEventListener('click', function (e) {
+				e.preventDefault();
+				const target = document.querySelector(this.getAttribute('href'));
+				if (target) {
+					target.scrollIntoView({
+						behavior: 'smooth',
+						block: 'start'
+					});
+				}
+			});
+		});
+	</script>
+</body>
+
+</html>

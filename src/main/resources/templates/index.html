@@ -57,11 +57,19 @@
 					<li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
 						<a class="nav-link" href="/admin/manageAuthors">Manage Authors</a>
 					</li>
-					
+
 					<!-- Logout -->
 
 					<li class="nav-item" sec:authorize="isAuthenticated()">
 						<a class="nav-link" href="/logout">Logout</a>
+					</li>
+
+					<!-- User Area -->
+					<li class="nav-item user-area" sec:authorize="!hasAuthority('ADMIN') && isAuthenticated()">
+					    <a class="nav-link" href="/userArea">
+					        <i class="fa fa-user user-icon"></i>
+					        User Area
+					    </a>
 					</li>
 
 					<!-- Login and Signup -->
@@ -83,10 +91,11 @@
 			<div class="row align-items-center">
 				<div class="col-lg-6 hero-content">
 					<h1>Welcome to SiwBooks</h1>
-					<p>Your online library where every story comes to life. Discover thousands of books, authentic reviews, and a community of passionate readers.</p>
+					<p>Your online library where every story comes to life. Discover thousands of books, authentic
+						reviews, and a community of passionate readers.</p>
 					<a href="/books" class="btn btn-primary btn-lg">
-					  <i class="fas fa-search me-2"></i>
-					  Explore the collection
+						<i class="fas fa-search me-2"></i>
+						Explore the collection
 					</a>
 				</div>
 				<div class="col-lg-6 text-center">
@@ -115,7 +124,8 @@
 							<i class="fas fa-infinity"></i>
 						</div>
 						<h3>Endless Catalogue</h3>
-						<p>Access over 50,000 titles, including classics, bestsellers, and new releases. Our collection is constantly updated.</p>
+						<p>Access over 50,000 titles, including classics, bestsellers, and new releases. Our collection
+							is constantly updated.</p>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6">
@@ -130,38 +140,38 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<!-- Stats Section -->
-		<section class="stats animate-on-scroll">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-3 col-md-6">
-						<div class="stat-item">
-							<span class="stat-number">50.000+</span>
-							<span class="stat-label">Available Books</span>
-						</div>
+	<section class="stats animate-on-scroll">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-6">
+					<div class="stat-item">
+						<span class="stat-number">50.000+</span>
+						<span class="stat-label">Available Books</span>
 					</div>
-					<div class="col-lg-3 col-md-6">
-						<div class="stat-item">
-							<span class="stat-number">25.000+</span>
-							<span class="stat-label">Active Readers</span>
-						</div>
+				</div>
+				<div class="col-lg-3 col-md-6">
+					<div class="stat-item">
+						<span class="stat-number">25.000+</span>
+						<span class="stat-label">Active Readers</span>
 					</div>
-					<div class="col-lg-3 col-md-6">
-						<div class="stat-item">
-							<span class="stat-number">100.000+</span>
-							<span class="stat-label">Reviews</span>
-						</div>
+				</div>
+				<div class="col-lg-3 col-md-6">
+					<div class="stat-item">
+						<span class="stat-number">100.000+</span>
+						<span class="stat-label">Reviews</span>
 					</div>
-					<div class="col-lg-3 col-md-6">
-						<div class="stat-item">
-							<span class="stat-number">500+</span>
-							<span class="stat-label">Featured Authors</span>
-						</div>
+				</div>
+				<div class="col-lg-3 col-md-6">
+					<div class="stat-item">
+						<span class="stat-number">500+</span>
+						<span class="stat-label">Featured Authors</span>
 					</div>
 				</div>
 			</div>
-		</section>
+		</div>
+	</section>
 
 	<!-- Carousel Section -->
 	<section class="carousel-section animate-on-scroll">
@@ -169,7 +179,8 @@
 			<div class="row mb-5">
 				<div class="col-12 text-center">
 					<h2 class="display-4 fw-bold text-dark mb-4">Featured Books</h2>
-					<p class="lead text-muted">Discover the latest releases and the books most loved by the community.</p>
+					<p class="lead text-muted">Discover the latest releases and the books most loved by the community.
+					</p>
 				</div>
 			</div>
 			<div id="booksCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -184,7 +195,8 @@
 							class="d-block w-100" alt="Libreria moderna">
 						<div class="carousel-caption d-md-block">
 							<h3>Contemporary Fiction</h3>
-							<p>Explore the most captivating stories of the moment through their stunning covers, carefully selected by our literary experts.</p>
+							<p>Explore the most captivating stories of the moment through their stunning covers,
+								carefully selected by our literary experts.</p>
 						</div>
 					</div>
 					<div class="carousel-item">
@@ -219,32 +231,36 @@
 
 	<!--Footer-->
 	<footer class="footer text-white mt-auto">
-	  <div class="container py-4 text-center">
-	    <div class="row">
-	      <div class="col-md-4 mb-3">
-	        <h5 class="fw-bold">SiwBooks</h5>
-	        <p class="small">Discover, enjoy, and explore thousands of books from your favorite authors!</p>
-	      </div>
-	      <div class="col-md-4 mb-3">
-	        <h6 class="fw-bold">Navigation</h6>
-	        <ul class="list-unstyled">
-	          <li><a href="/books" class="footer-link">Books</a></li>
-			  <li><a href="/authors" class="footer-link">Authors</a></li>
-			  <li><a href="/admin/manageBooks" class="footer-link" sec:authorize="hasAuthority('ADMIN')">Manage Books</a></li>
-			  			  <li><a href="/admin/manageAuthors" class="footer-link" sec:authorize="hasAuthority('ADMIN')">Manage Authors</a></li>
-	       </ul>
-	      </div>
-	      <div class="col-md-4 mb-3">
-	        <h6 class="fw-bold">Contacts</h6>
-	        <p class="small mb-1">Email: info@siwbooks.com</p>
-	        <p class="small">Phone number: +39 0123 456789</p>
-	      </div>
-	    </div>
-	    <hr class="border-light" />
-	    <p class="small mb-0">© 2025 SiwBooks - EU</p>
-	  </div>
+		<div class="container py-4 text-center">
+			<div class="row">
+				<div class="col-md-4 mb-3">
+					<h5 class="fw-bold">SiwBooks</h5>
+					<p class="small">Discover, enjoy, and explore thousands of books from your favorite authors!</p>
+				</div>
+				<div class="col-md-4 mb-3">
+					<h6 class="fw-bold">Navigation</h6>
+					<ul class="list-unstyled">
+						<li><a href="/books" class="footer-link">Books</a></li>
+						<li><a href="/authors" class="footer-link">Authors</a></li>
+						<li><a href="/userArea" class="footer-link" 
+													sec:authorize="!hasAuthority('ADMIN') && isAuthenticated()">User Area</a></li>
+						<li><a href="/admin/manageBooks" class="footer-link"
+								sec:authorize="hasAuthority('ADMIN')">Manage Books</a></li>
+						<li><a href="/admin/manageAuthors" class="footer-link"
+								sec:authorize="hasAuthority('ADMIN')">Manage Authors</a></li>
+					</ul>
+				</div>
+				<div class="col-md-4 mb-3">
+					<h6 class="fw-bold">Contacts</h6>
+					<p class="small mb-1">Email: info@siwbooks.com</p>
+					<p class="small">Phone number: +39 0123 456789</p>
+				</div>
+			</div>
+			<hr class="border-light" />
+			<p class="small mb-0">© 2025 SiwBooks - EU</p>
+		</div>
 	</footer>
-	
+
 	<script>
 		// Scroll animations
 		const observerOptions = {

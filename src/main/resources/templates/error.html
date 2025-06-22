@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+	
+  
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/error.css">
+</head>
+<body>
+    
+    <div class="background-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Container -->
+    <div class="error-container">
+        <!-- Error icon -->
+        <div class="error-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+
+        <div class="error-number">404</div>
+
+        <h1 class="error-title">Page Not Found</h1>
+
+        <p class="error-description">
+			Oops! The page you're looking for seems to have disappeared into thin air.
+			Maybe it has been moved or no longer exists.
+        </p>
+
+        <a href="/" class="btn btn-primary home-button">
+            <i class="fas fa-home"></i>
+            Back to the home
+        </a>
+
+    </div>
+
+    <script>
+        // Animazione di entrata degli elementi
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.error-container');
+            container.classList.add('animate');
+            
+            // Effetto hover sul pulsante home
+            const homeButton = document.querySelector('.home-button');
+            homeButton.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.05)';
+            });
+            
+            homeButton.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-3px) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

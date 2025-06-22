@@ -58,6 +58,14 @@
 						<a class="nav-link" href="/logout">Logout</a>
 					</li>
 
+					<!-- User Area -->
+					<li class="nav-item user-area" sec:authorize="!hasAuthority('ADMIN') && isAuthenticated()">
+						<a class="nav-link" href="/userArea">
+							<i class="fa fa-user user-icon"></i>
+							User Area
+						</a>
+					</li>
+
 					<!-- Login and Signup -->
 					<li class="nav-item" sec:authorize="!isAuthenticated()">
 						<a class="nav-link" href="/login">Login</a>
@@ -152,6 +160,8 @@
 					<ul class="list-unstyled">
 						<li><a href="/books" class="footer-link">Books</a></li>
 						<li><a href="/authors" class="footer-link">Authors</a></li>
+						<li><a href="/userArea" class="footer-link" 
+							sec:authorize="!hasAuthority('ADMIN') && isAuthenticated()">User Area</a></li>
 						<li><a href="/admin/manageBooks" class="footer-link"
 								sec:authorize="hasAuthority('ADMIN')">Manage
 								Books</a></li>
