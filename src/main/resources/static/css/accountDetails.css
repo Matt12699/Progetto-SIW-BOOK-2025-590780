@@ -1,0 +1,570 @@
+/* ==========================================
+   ACCOUNT DETAILS PAGE - CSS MODERNO
+   ========================================== */
+
+/* Layout principale con padding top per navbar fissa */
+.account-details-main {
+    min-height: calc(100vh - 160px);
+    padding: 120px 0 2rem 0; /* Aggiunto padding-top per evitare sovrapposizione navbar */
+    background: linear-gradient(135deg, var(--cream) 0%, var(--light-brown) 100%);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.account-details-container {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.account-details-card {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    box-shadow: 
+        0 20px 60px rgba(62, 39, 35, 0.12),
+        0 8px 32px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    border: 1px solid rgba(255, 111, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    animation: accountCardSlideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes accountCardSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.account-details-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-gold), var(--primary-brown), var(--accent-gold));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.account-details-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 
+        0 32px 80px rgba(62, 39, 35, 0.18),
+        0 16px 48px rgba(0, 0, 0, 0.12);
+}
+
+.account-details-card:hover::before {
+    opacity: 1;
+}
+
+/* Header dell'account modernizzato */
+.account-header {
+    background: linear-gradient(135deg, var(--primary-brown) 0%, var(--secondary-brown) 50%, var(--accent-gold) 100%);
+    color: var(--cream);
+    padding: 3rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.account-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(255, 111, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.account-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.8s ease;
+}
+
+.account-details-card:hover .account-header::after {
+    left: 100%;
+}
+
+.account-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    border: 3px solid rgba(255, 111, 0, 0.3);
+    position: relative;
+    z-index: 1;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.account-avatar:hover {
+    transform: scale(1.1) rotateY(10deg);
+    box-shadow: 
+        0 16px 48px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: var(--accent-gold);
+}
+
+.account-title {
+    margin: 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    z-index: 1;
+    letter-spacing: -0.03em;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.account-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cream), transparent);
+    border-radius: 1px;
+}
+
+/* Form modernizzato */
+.account-form {
+    padding: 3rem 2.5rem;
+    background: linear-gradient(135deg, var(--white) 0%, var(--cream) 100%);
+    position: relative;
+}
+
+.account-form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--accent-gold) 0%, var(--primary-brown) 100%);
+    opacity: 0.7;
+}
+
+.form-group {
+    margin-bottom: 2rem;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: formGroupSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.2s; }
+.form-group:nth-child(3) { animation-delay: 0.3s; }
+.form-group:nth-child(4) { animation-delay: 0.4s; }
+.form-group:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes formGroupSlideIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    color: var(--primary-brown);
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+    position: relative;
+}
+
+.form-label i {
+    color: var(--accent-gold);
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.form-control {
+    background: var(--cream);
+    border: 2px solid rgba(255, 111, 0, 0.15);
+    border-radius: 16px;
+    padding: 1.2rem 1.5rem;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--primary-brown);
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    position: relative;
+}
+
+.form-control:focus {
+    border-color: var(--accent-gold);
+    box-shadow: 
+        0 0 0 0.25rem rgba(255, 111, 0, 0.15),
+        0 8px 32px rgba(255, 111, 0, 0.1);
+    background: var(--white);
+    outline: none;
+    transform: translateY(-2px);
+}
+
+.form-control:read-only {
+    background: rgba(239, 235, 233, 0.8);
+    cursor: not-allowed;
+    border-color: rgba(109, 76, 65, 0.2);
+    color: var(--secondary-brown);
+}
+
+.form-control::placeholder {
+    color: rgba(109, 76, 65, 0.5);
+    font-weight: 400;
+}
+
+/* Gruppo password modernizzato */
+.password-group {
+    position: relative;
+}
+
+.password-input-container {
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+}
+
+.password-input-container .form-control {
+    flex: 1;
+}
+
+/* Azioni del form */
+.form-actions {
+    margin-top: 2.5rem;
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 111, 0, 0.1);
+    opacity: 0;
+    animation: formActionsSlideIn 0.6s ease 0.6s forwards;
+}
+
+@keyframes formActionsSlideIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.btn-primary-custom {
+	background: linear-gradient(135deg, var(--primary-brown, #3E2723) 0%, var(--secondary-brown, #6D4C41) 100%);
+	border: 2px solid var(--accent-gold, #FF6F00);
+	border-radius: 25px;
+	padding: 10px 20px;
+	color: var(--cream, #FAFAFA);
+	font-weight: 500;
+	transition: all 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+	background: var(--accent-gold, #FF6F00);
+	color: var(--primary-brown, #3E2723);
+	transform: translateY(-2px);
+	box-shadow: 0 5px 15px rgba(255,111,0,0.3);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, var(--charcoal) 0%, var(--gray) 100%);
+    color: var(--white);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    padding: 1.2rem 2.5rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    letter-spacing: -0.01em;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-secondary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, var(--primary-brown) 0%, var(--secondary-brown) 100%);
+    color: var(--cream);
+    transform: translateY(-3px);
+    box-shadow: 
+        0 12px 35px rgba(62, 39, 35, 0.3),
+        0 6px 20px rgba(0, 0, 0, 0.15);
+    border-color: var(--accent-gold);
+}
+
+.btn-secondary:hover::before {
+    left: 100%;
+}
+
+.btn-secondary i {
+    font-size: 1rem;
+}
+
+/* Breadcrumb modernizzato (se presente) */
+.breadcrumb-container {
+    margin-bottom: 2rem;
+    animation: slideInFromTop 0.6s ease-out;
+}
+
+@keyframes slideInFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.breadcrumb {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 1.2rem 2rem;
+    border: 1px solid rgba(255, 111, 0, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    margin-bottom: 0;
+}
+
+.breadcrumb-item {
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+}
+
+.breadcrumb-item a {
+    color: var(--primary-brown);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 0.3rem 0.6rem;
+    border-radius: 8px;
+    position: relative;
+}
+
+.breadcrumb-item a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--accent-gold);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.breadcrumb-item a:hover {
+    color: var(--accent-gold);
+    background: rgba(255, 111, 0, 0.08);
+}
+
+.breadcrumb-item a:hover::before {
+    width: 100%;
+}
+
+.breadcrumb-item.active {
+    color: var(--secondary-brown);
+    font-weight: 700;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+    color: var(--accent-gold);
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN MODERNO
+   ========================================== */
+
+@media (max-width: 992px) {
+    .account-details-main {
+        padding-top: 100px;
+    }
+    
+    .account-form {
+        padding: 2.5rem;
+    }
+    
+    .account-header {
+        padding: 2.5rem 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .account-details-main {
+        padding: 90px 0 1.5rem 0;
+    }
+    
+    .account-details-container {
+        padding: 0 1rem;
+    }
+    
+    .account-header {
+        padding: 2rem 1.5rem;
+    }
+    
+    .account-title {
+        font-size: 1.8rem;
+    }
+    
+    .account-avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+    
+    .account-form {
+        padding: 2rem 1.5rem;
+    }
+    
+    .password-input-container {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+   
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .breadcrumb-container {
+        margin-bottom: 1.5rem;
+    }
+    
+    .breadcrumb {
+        padding: 1rem 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .account-details-main {
+        padding: 80px 0 1rem 0;
+    }
+    
+    .account-details-container {
+        padding: 0 0.5rem;
+    }
+    
+    .account-title {
+        font-size: 1.5rem;
+    }
+    
+    .account-avatar {
+        width: 70px;
+        height: 70px;
+        font-size: 1.8rem;
+    }
+    
+    .account-form {
+        padding: 1.5rem;
+    }
+    
+    .account-header {
+        padding: 1.5rem;
+    }
+    
+    .form-control,
+    .btn-secondary {
+        padding: 1rem 1.25rem;
+        font-size: 0.95rem;
+    }
+    
+    .breadcrumb {
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Animazioni aggiuntive per elementi specifici */
+.form-control:focus {
+    animation: inputFocusGlow 0.3s ease-out;
+}
+
+@keyframes inputFocusGlow {
+    0% {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+    50% {
+        box-shadow: 
+            0 0 0 0.15rem rgba(255, 111, 0, 0.2),
+            0 8px 32px rgba(255, 111, 0, 0.15);
+    }
+    100% {
+        box-shadow: 
+            0 0 0 0.25rem rgba(255, 111, 0, 0.15),
+            0 8px 32px rgba(255, 111, 0, 0.1);
+    }
+}
+
+/* Effetti di hover per l'intera card */
+.account-details-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.account-details-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 111, 0, 0.03), transparent);
+    transition: left 0.8s ease;
+    pointer-events: none;
+}
+
+.account-details-card:hover::after {
+    left: 100%;
+}

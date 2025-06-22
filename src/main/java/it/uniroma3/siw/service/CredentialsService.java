@@ -42,4 +42,9 @@ public class CredentialsService {
 		boolean result = this.credentialsRepository.existsByUsername(username);
 		return result;
 	}
+	
+	public void updatePassword(Credentials credentials, String newPassword) {
+		credentials.setPassword(this.passwordEncoder.encode(newPassword));
+		this.credentialsRepository.save(credentials);
+	}
 }

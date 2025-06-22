@@ -55,8 +55,16 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 0C5.373 0 0 5.373 0 12c0 6.627 5.373 12 12 12s12-5.373 12-12C24 5.373 18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10zm-2-6l-4-4 1.414-1.414L10 13.172l6.293-6.293 1.414 1.414L10 16z" />
         </svg>
-        <span>Registrazione completata con successo!</span>
+        <span>Registration completed successfully!</span>
     </div>
+	
+	<!--Password Changed alert-->
+	   <div id="custom-alert" class="custom-alert" role="alert" th:if="${changedPassword}">
+	       <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="currentColor">
+	           <path d="M12 0C5.373 0 0 5.373 0 12c0 6.627 5.373 12 12 12s12-5.373 12-12C24 5.373 18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10zm-2-6l-4-4 1.414-1.414L10 13.172l6.293-6.293 1.414 1.414L10 16z" />
+	       </svg>
+	       <span>Password changed successfully!</span>
+	   </div>
 
     <!-- Brand Logo -->
     <a class="brand-logo d-flex align-items-center text-decoration-none" href="/">
@@ -109,7 +117,26 @@
             Don't have an account? <a href="/register" class="form-link">Sign up here</a>
         </p>
     </div>
+	
+	<script>
+	    window.addEventListener('DOMContentLoaded', () => {
+	        const alert = document.querySelector('.custom-alert');
+	        if (alert) {
+	            setTimeout(() => {
+	                alert.classList.add('fade-out');
+	                // Rimuove l'elemento dopo che l'animazione è terminata
+	                alert.addEventListener('animationend', () => {
+	                    alert.remove();
+	                });
+	            }, 2000); // dopo 4 secondi
+	        }
+	    });
+	</script>
+
+
 
 </body>
+
+
 
 </html>

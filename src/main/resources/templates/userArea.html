@@ -23,6 +23,7 @@
 	<link rel="stylesheet" href="/css/manage.css" />
 	<link rel="stylesheet" href="/css/review.css" />
 	<link rel="stylesheet" href="/css/userArea.css" />
+
 </head>
 
 <body>
@@ -90,12 +91,19 @@
 		<div class="container">
 			<div class="books-hero-content animate-on-scroll">
 				<div class="welcome-header">
-					<div class="user-avatar-large">
-						<span th:text="${#strings.substring(currentUser.credentials.username, 0, 1)}">U</span>
+					<div class="welcome-content">
+						<div class="user-avatar-large">
+							<span th:text="${#strings.substring(currentUser.credentials.username, 0, 1)}">U</span>
+						</div>
+						<div class="welcome-text">
+							<h1>Welcome back, <span class="username">[[${currentUser.credentials.username}]]</span>!</h1>
+							<p class="welcome-subtitle">Your personal library awaits</p>
+						</div>
 					</div>
-					<div class="welcome-text">
-						<h1>Welcome back, <span class="username">[[${currentUser.credentials.username}]]</span>!</h1>
-						<p class="welcome-subtitle">Your personal library awaits</p>
+					<div class="settings-button">
+						<a href="/accountDetails" class="btn btn-primary-custom">
+							<i class="fa fa-gear"></i>
+						</a>
 					</div>
 				</div>
 

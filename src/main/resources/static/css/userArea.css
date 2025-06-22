@@ -1,5 +1,42 @@
 /* User Area Specific Styles */
 
+/* CSS personalizzato per allineare il bottone ingranaggio */
+		.welcome-header {
+			display: flex;
+			align-items: flex-start;
+			justify-content: space-between;
+			width: 100%;
+			gap: 20px;
+		}
+		
+		.welcome-content {
+			display: flex;
+			align-items: center;
+			gap: 20px;
+			flex: 1;
+		}
+		
+		.settings-button {
+			margin-top: 10px; /* Allinea con il titolo */
+		}
+		
+		/* Responsive per schermi piccoli */
+		@media (max-width: 768px) {
+			.welcome-header {
+				flex-direction: column;
+				align-items: center;
+				text-align: center;
+			}
+			
+			.welcome-content {
+				flex-direction: column;
+				text-align: center;
+			}
+			
+			.settings-button {
+				margin-top: 20px;
+			}
+		}
 /* Hero Section Enhancements */
 .user-hero {
     background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 50%, #667eea 100%);

@@ -150,6 +150,23 @@
     backdrop-filter: blur(10px);
 }
 
+.btn-primary-custom {
+	background: linear-gradient(135deg, var(--primary-brown, #3E2723) 0%, var(--secondary-brown, #6D4C41) 100%);
+	border: 2px solid var(--accent-gold, #FF6F00);
+	border-radius: 25px;
+	padding: 10px 20px;
+	color: var(--cream, #FAFAFA);
+	font-weight: 500;
+	transition: all 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+	background: var(--accent-gold, #FF6F00);
+	color: var(--primary-brown, #3E2723);
+	transform: translateY(-2px);
+	box-shadow: 0 5px 15px rgba(255,111,0,0.3);
+}
+
 /* ==========================================
 STATS SECTION - DESIGN DOLCE
 ========================================== */
