@@ -34,6 +34,7 @@ public class AuthorController {
 	@Autowired BookService bookService;
 	@Autowired ReviewService reviewService;
 
+	// Get mapping per il caricamento delle immagini
 	@GetMapping("/author/image/{id}")
 	public ResponseEntity<byte[]> getBookImage(@PathVariable Long id) {
 		Author author = authorService.findById(id);
@@ -42,40 +43,46 @@ public class AuthorController {
 		}
 		byte[] imageBytes = author.getImage().getImage();  
 		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_TYPE, "image/jpeg") // o image/png se necessario
+				.header(HttpHeaders.CONTENT_TYPE, "image/jpeg") 
 				.body(imageBytes);
 	}
 
+	// Get mapping della pagina che mostra tutti gli autori
 	@GetMapping(value = "/authors") 
 	public String showAuthors(@RequestParam(required=false) String search, Model model) {
 
+		// Se è stato cercato qualcosa, mostro solo gli autori che contengono nel nome o
+		// nel cognome la parola chiave
 		if(search!=null && !search.trim().isEmpty()) {
-			model.addAttribute("authors", this.authorService.findByTitleContaining(search));
+			model.addAttribute("authors", this.authorService.findByNameOrSurnameContaining(search));
 			model.addAttribute("searchQuery", search);
 		}else
-		{
+		{	// Senno li mostro tutti
 			model.addAttribute("authors", this.authorService.getAllAuthors());
 		}
 
 		return "authors.html";
 	}
 
+	// Pagina che mostra un autore in particolare
 	@GetMapping(value = "/author/{id}") 
 	public String showAuthor(@PathVariable Long id, Model model) {
 		model.addAttribute("author", this.authorService.findById(id));
 		return "author.html";
 	}
 
+	// Get mapping del form per l'aggiunta di un autore
 	@GetMapping("/admin/formNewAuthor")
 	public String formNewAuthor(Model model) {
 		model.addAttribute("author", new Author());
 		return "/admin/formNewAuthor.html";
 	}
 
-	//Get mapping della pagina che mostra il manage degli autori
+	// Get mapping della pagina che mostra il manage degli autori
 	@GetMapping(value = "/admin/manageAuthors") 
 	public String manageAuthors(Model model) {
 
+		// Stats per l'admin
 		model.addAttribute("reviewNumber", this.reviewService.countReviews());
 		model.addAttribute("authorNumber", this.authorService.countAuthors());
 		model.addAttribute("bookNumber", this.bookService.countBooks());
@@ -85,71 +92,84 @@ public class AuthorController {
 		return "/admin/manageAuthors.html";
 	}
 
+	// Get mapping per la modifica di un singolo autore
 	@GetMapping(value = "/admin/manageAuthor/{authorId}")
 	public String manageAuthor(@PathVariable("authorId") Long authorId, Model model) {
 		model.addAttribute("author", this.authorService.findById(authorId));
 		return "/admin/manageAuthor.html";
 	}
 
+	// Post mapping per la cancellazione di un autore, 
+	// cancella a cascata anche i libri i quali a loro volta cancellano le recensioni
 	@PostMapping("/admin/authorDelete/{authorId}")
 	public String authorDelete(@PathVariable("authorId") Long authorId) {
 		this.authorService.deleteById(authorId);
 		return "redirect:/admin/manageAuthors";
 	}
-	
+
+	// Get mapping per il form della modifica di un autore
 	@GetMapping(value = "/admin/formEditAuthor/{authorId}")
 	public String formEditAuthor(@PathVariable("authorId") Long authorId, Model model) {
 		model.addAttribute("author", this.authorService.findById(authorId));
 		return "/admin/formEditAuthor.html";
 	}
-	
-	//Post mapping per l'edit di un libro
-		@PostMapping("/admin/editAuthor/{authorId}")
-		public String editAuthor(@Valid @ModelAttribute("author") Author formAuthor, BindingResult bindingResult, @RequestParam("imageFile") MultipartFile imageFile, @PathVariable("authorId") Long authorId, Model model) throws IOException {
 
-			if(imageFile.isEmpty()) {
-				model.addAttribute("imageError", "Author must have an image");
-			}
+	// Post mapping per l'edit di un autore
+	@PostMapping("/admin/editAuthor/{authorId}")
+	public String editAuthor(@Valid @ModelAttribute("author") Author formAuthor, 
+							BindingResult bindingResult,
+							@RequestParam("imageFile") MultipartFile imageFile, 
+							@PathVariable("authorId") Long authorId, Model model) throws IOException {
 
-			if (bindingResult.hasErrors() || model.containsAttribute("imageError")) { // sono emersi errori nel binding
-				// Sennò gli autori non si vedrebbero
-				model.addAttribute("author", formAuthor);
-				return "/admin/formEditAuthor.html";
-			} else {                         // NON sono emersi errori nel binding
+		if(imageFile.isEmpty()) {
+			model.addAttribute("imageError", "Author must have an image");
+		}
 
-				Author existingAuthor = this.authorService.findById(authorId);
-				
-				existingAuthor.setName(formAuthor.getName());
-				existingAuthor.setSurname(formAuthor.getSurname());
-				existingAuthor.setDateOfBirth(formAuthor.getDateOfBirth());
-				existingAuthor.setDateOfDeath(formAuthor.getDateOfDeath());
-				existingAuthor.setNationality(formAuthor.getNationality());
+		if (bindingResult.hasErrors() || model.containsAttribute("imageError")) { // sono emersi errori nel binding
+			// Sennò gli autori non si vedrebbero
+			model.addAttribute("author", formAuthor);
+			return "/admin/formEditAuthor.html";
+		} else {   // NON sono emersi errori nel binding
 
-				Image image = new Image();
-				image.setImage(imageFile.getBytes());
-				existingAuthor.setImage(image);
+			Author existingAuthor = this.authorService.findById(authorId);
+
+			// Vengono risettati manualmente tutti gli attributi dell'autore
+			existingAuthor.setName(formAuthor.getName());
+			existingAuthor.setSurname(formAuthor.getSurname());
+			existingAuthor.setDateOfBirth(formAuthor.getDateOfBirth());
+			existingAuthor.setDateOfDeath(formAuthor.getDateOfDeath());
+			existingAuthor.setNationality(formAuthor.getNationality());
+
+			Image image = new Image();
+			image.setImage(imageFile.getBytes());
+			existingAuthor.setImage(image);
 
 
-				authorService.save(existingAuthor);
+			authorService.save(existingAuthor);
 
-				
-				return "redirect:/admin/manageAuthors";
 
-			}
+			return "redirect:/admin/manageAuthors";
 
 		}
 
+	}
+
+	// Post mapping per aggiungere un autore
 	@PostMapping("/admin/addAuthor")
 	public String addAuthor(@Valid @ModelAttribute("author") Author author, BindingResult bindingResult, @RequestParam("imageFile") MultipartFile imageFile, Model model) throws IOException {
 
 		if(imageFile.isEmpty()) {
 			model.addAttribute("imageError", "Author must have an image");
 		}
-		if (bindingResult.hasErrors() || model.containsAttribute("imageError")) { // sono emersi errori nel binding
+		
+		if(authorService.existsByNameAndSurname(author.getName(), author.getSurname())) {
+			model.addAttribute("existingAuthor", "This author already exists");
+		}
+		if (bindingResult.hasErrors() || model.containsAttribute("imageError") || model.containsAttribute("existingAuthor")) { // sono emersi errori nel binding
 
 			return "/admin/formNewAuthor.html";
-		} else {                         // NON sono emersi errori nel binding
-
+			
+		} else {    // NON sono emersi errori nel binding
 
 
 			Image image = new Image();

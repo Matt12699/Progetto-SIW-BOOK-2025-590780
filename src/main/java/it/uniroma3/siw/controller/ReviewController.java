@@ -14,6 +14,7 @@ public class ReviewController {
 	
 	@Autowired ReviewService reviewService;
 	
+	// Post mapping per la cancellazione di una review
 	@PostMapping("/admin/deleteReview/{bookId}/{reviewId}")
 	public String deleteReview(@PathVariable("reviewId") Long reviewId, @PathVariable("bookId") Long bookId, Model model) {
 		

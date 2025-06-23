@@ -76,11 +76,6 @@
     <div class="form-container">
         <h1 class="form-title text-center">Log in to SiwBooks</h1>
 
-        <!-- Error message -->
-        <div th:if="${error}" class="alert alert-danger" role="alert">
-            <span th:text="${error}"></span>
-        </div>
-
         <form th:action="@{/login}" method="POST">
             <!-- Username field -->
             <div class="form-group mb-3">

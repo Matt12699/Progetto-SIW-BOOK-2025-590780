@@ -48,7 +48,7 @@ public class AuthenticationController {
 		return "error.html";
 	}
 
-	//Mostra la home page, se l'utente è admin va su admin
+	//Mostra la home page
 	@GetMapping(value = "/") 
 	public String index(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -71,6 +71,7 @@ public class AuthenticationController {
 		return "index.html";
 	}
 
+	//Post mapping della pagina di registrazione
 	@PostMapping("/register")
 	public String registerUser(@Valid @ModelAttribute("user") User user,
 			BindingResult userBindingResult, @Valid
@@ -78,11 +79,13 @@ public class AuthenticationController {
 			BindingResult credentialsBindingResult,
 			RedirectAttributes redirectAttributes, Model model) {
 
+		// Se lo username è già stato preso allora sollevo errore
 		if(credentialsService.existsByUsername(credentials.getUsername())) {
 			model.addAttribute("usernameDuplicated", "Username already taken");
 			return "signup.html";
 		}
 
+		// Se non ci sono errori salvo user setto lo user nelle credentials e salvo le credentials
 		if (!userBindingResult.hasErrors() && !credentialsBindingResult.hasErrors()) {
 			userService.saveUser(user);
 			credentials.setUser(user);

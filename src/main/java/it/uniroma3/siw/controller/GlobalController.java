@@ -28,7 +28,7 @@ public class GlobalController {
         return user;
     }
 	
-	//Metodo per ottenere lo user attuale
+	// Metodo per ottenere lo user attuale
 	@ModelAttribute("currentUser")
     public User getCurrentUser() {
 		
@@ -43,6 +43,7 @@ public class GlobalController {
         
     }
     
+	// Metodo per capire se lo user è autenticato
     @ModelAttribute("isAuthenticated")
     public boolean isAuthenticated(Authentication authentication) {
         return authentication != null && authentication.isAuthenticated() 

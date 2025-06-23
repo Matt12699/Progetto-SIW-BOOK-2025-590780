@@ -120,13 +120,16 @@
 	<div class="form-container">
 		<h1 class="form-title text-center">Insert a new Book</h1>
 
+		<!-- Form Start -->
 		<form th:action="@{/admin/addBook}" method="POST" enctype="multipart/form-data">
+			
 			<!-- Title field -->
 			<div class="form-group mb-3">
 				<label for="titleInput" class="form-label">Title</label>
 				<input type="text" class="form-control custom-input" id="titleInput" th:field="${book.title}"
 					placeholder="I Promessi Sposi" />
 				<div class="error" th:if="${#fields.hasErrors('book.title')}" th:errors="${book.title}"></div>
+				<div class="error" th:if="${existingBook}" th:text="${existingBook}"></div>
 			</div>
 
 			<!-- Year field -->
@@ -155,7 +158,7 @@
 
 			<!--Authors Section-->
 			<div class="demo-container" th:if="${authors != null and !authors.isEmpty()}">
-				<!-- Sezione Autori Selezionati -->
+				<!-- Selected Authors -->
 				<div id="selected-authors-section" style="display: none; margin-top: 2rem;">
 					<h1 class="demo-title">Selected Authors</h1>
 					<div id="selected-authors" class="books-grid">

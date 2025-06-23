@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -40,7 +39,9 @@
 	<div class="form-container">
 		<h1 class="form-title text-center">Edit [[${author.name}]] [[${author.surname}]]</h1>
 
-		<form th:action="@{'/admin/editAuthor/' + ${author.id}}" method="POST" enctype="multipart/form-data" >
+		<!-- Form Start -->
+		<form th:action="@{'/admin/editAuthor/' + ${author.id}}" method="POST" enctype="multipart/form-data">
+			
 			<!-- Name field -->
 			<div class="form-group mb-3">
 				<label for="nameInput" class="form-label">Name</label>
@@ -60,9 +61,10 @@
 			<!-- Nationality field -->
 			<div class="form-group mb-3">
 				<label for="nationalityInput" class="form-label">Nationality</label>
-				<input type="text" class="form-control custom-input" id="nationalityInput" th:field="${author.nationality}"
-					placeholder="Italian">
-				<div class="error" th:if="${#fields.hasErrors('author.nationality')}" th:errors="${author.nationality}"></div>
+				<input type="text" class="form-control custom-input" id="nationalityInput"
+					th:field="${author.nationality}" placeholder="Italian">
+				<div class="error" th:if="${#fields.hasErrors('author.nationality')}" th:errors="${author.nationality}">
+				</div>
 			</div>
 
 			<!-- Date of birth field -->
@@ -86,7 +88,7 @@
 			<!-- Image field -->
 			<div class="form-group mb-3">
 				<label for="imageInput" class="form-label">Image</label>
-				<input type="file" class="form-control custom-input" id="imageInput" name="imageFile"/>
+				<input type="file" class="form-control custom-input" id="imageInput" name="imageFile" />
 				<div class="error" th:if="${imageError}" th:text="${imageError}"></div>
 			</div>
 

@@ -38,6 +38,7 @@ public class UserController {
 	@GetMapping(value = "/userArea")
 	public String userArea(@ModelAttribute("currentUser") User user, Model model) {
 
+		// Calcolo per ottenere il voto medio
 		if (user.getWrittenReviews() != null && !user.getWrittenReviews().isEmpty()) {
 			double sum = 0.0;
 			for (Review review : user.getWrittenReviews()) {

@@ -13,14 +13,18 @@ public class ReviewService {
 	@Autowired
 	private ReviewRepository reviewRepository;
 	
+	// Salva la review
 	public void save(Review review) {
 		this.reviewRepository.save(review);
 	}
 	
+	// Conta il numero di review
 	public Long countReviews() {
 		return this.reviewRepository.count();
 	}
 	
+	// Cancella la review facendo attenzione a cancellarla sia dalla lista di review dello user
+	// Che dalla lista di review del libro
 	public void deleteById(Long reviewId) {
 		
 		Review review = this.reviewRepository.findById(reviewId).get();

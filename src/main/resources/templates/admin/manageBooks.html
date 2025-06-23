@@ -192,8 +192,8 @@
 					<ul class="list-unstyled">
 						<li><a href="/books" class="footer-link">Books</a></li>
 						<li><a href="/authors" class="footer-link">Authors</a></li>
-						<li><a href="/userArea" class="footer-link" 
-													sec:authorize="!hasAuthority('ADMIN') && isAuthenticated()">User Area</a></li>
+						<li><a href="/userArea" class="footer-link"
+								sec:authorize="!hasAuthority('ADMIN') && isAuthenticated()">User Area</a></li>
 						<li><a href="/admin/manageBooks" class="footer-link"
 								sec:authorize="hasAuthority('ADMIN')">Manage Books</a></li>
 						<li><a href="/admin/manageAuthors" class="footer-link"

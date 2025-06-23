@@ -4,7 +4,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* ==========================================
-   GLOBAL STYLES - Da applicare a tutte le pagine
+   GLOBAL STYLES 
    ========================================== */
 
 /* CSS Variables */
@@ -51,7 +51,7 @@ label, .navbar-brand, .nav-link,
 }
 
 /* ==========================================
-   ALERT STYLES - Design moderno e centrato
+  	 ALERT STYLES 
    ========================================== */
 
 .alert {
@@ -103,7 +103,7 @@ label, .navbar-brand, .nav-link,
     box-shadow: 0 20px 60px rgba(255,111,0,0.25);
 }
 
-/* Icona moderna */
+
 .alert-warning::after {
     content: '\f071';
     font-family: 'Font Awesome 6 Free';
@@ -113,7 +113,6 @@ label, .navbar-brand, .nav-link,
     order: -1;
 }
 
-/* Varianti aggiuntive moderne */
 .alert-info {
     background: linear-gradient(135deg, rgba(55,71,79,0.9) 0%, rgba(84,110,122,0.9) 100%);
     color: var(--white);
@@ -248,7 +247,6 @@ label, .navbar-brand, .nav-link,
     width: 80%;
 }
 
-/* Fix per la User Area nella navbar */
 .navbar-nav .nav-item.user-area {
     display: flex;
     align-items: center;
@@ -405,7 +403,6 @@ p {
     box-shadow: 0 15px 40px rgba(255,111,0,0.3);
 }
 
-/* Tutti i bottoni usano Poppins */
 .btn {
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
@@ -413,7 +410,7 @@ p {
 }
 
 /* ==========================================
-   FORM ELEMENTS CON POPPINS
+   FORM ELEMENTS 
    ========================================== */
 .form-control,
 input,

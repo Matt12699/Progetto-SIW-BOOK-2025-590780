@@ -38,7 +38,7 @@ public class BookController {
 	@Autowired AuthorService authorService;
 	@Autowired ReviewService reviewService;
 
-	//Inserimento immagine come copertina
+	// Inserimento immagine come copertina
 	@Transactional
 	@GetMapping("/book/image/{id}")
 	public ResponseEntity<byte[]> getBookImage(@PathVariable Long id) {
@@ -48,23 +48,26 @@ public class BookController {
 		}
 		byte[] imageBytes = book.getImage().getImage();  
 		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_TYPE, "image/jpeg") // o image/png se necessario
+				.header(HttpHeaders.CONTENT_TYPE, "image/jpeg") 
 				.body(imageBytes);
 	}
 
-	//Get mapping della pagina di un solo libro
+	// Get mapping della pagina di un solo libro
 	@GetMapping(value = "/book/{id}") 
 	public String showBook(@PathVariable Long id, Model model) {
 		Book book = bookService.findById(id);
 		model.addAttribute("book", book);
+		// Questa è la review che verrà riempita in caso l'utente autenticato
+		// Decida di scriverne una
 		model.addAttribute("review", new Review());
 		return "book.html";
 	}
 
-	//Get mapping della pagina che mostra i libri
+	// Get mapping della pagina che mostra i libri
 	@GetMapping(value = "/books") 
 	public String showBooks(@RequestParam(required=false) String search, Model model) {
 
+		// Se la ricerca non è nulla allora mostro i libri che contengono nella parola chiave la ricerca
 		if(search!=null && !search.trim().isEmpty()) {
 			model.addAttribute("books", this.bookService.findByTitleContaining(search));
 			model.addAttribute("searchQuery", search);
@@ -75,10 +78,11 @@ public class BookController {
 		return "books.html";
 	}
 
-	//Get mapping della pagina che mostra il manage dei libri
+	// Get mapping della pagina che mostra il manage dei libri
 	@GetMapping(value = "/admin/manageBooks") 
 	public String manageBooks(Model model) {
 
+		// Per le stats dell'admin
 		model.addAttribute("reviewNumber", this.reviewService.countReviews());
 		model.addAttribute("authorNumber", this.authorService.countAuthors());
 		model.addAttribute("bookNumber", this.bookService.countBooks());
@@ -88,23 +92,31 @@ public class BookController {
 		return "/admin/manageBooks.html";
 	}
 
+	// Get mapping per la modifica di un singolo libro
 	@GetMapping(value = "/admin/manageBook/{bookId}")
 	public String manageBook(@PathVariable("bookId") Long bookId, Model model) {
 		model.addAttribute("book", this.bookService.findById(bookId));
 		return "/admin/manageBook.html";
 	}
 
+	// Get mapping per il form di modifica del libro
 	@GetMapping(value = "/admin/formEditBook/{bookId}")
 	public String formEditBook(@PathVariable("bookId") Long bookId, Model model) {
 		model.addAttribute("book", this.bookService.findById(bookId));
+		// Questo serve a mostrarli
 		model.addAttribute("authors", this.authorService.getAllAuthors());
 		return "/admin/formEditBook.html";
 	}
 
-	//Post mapping per l'edit di un libro
+	// Post mapping per l'edit di un libro
 	@PostMapping("/admin/editBook/{bookId}")
-	public String editBook(@Valid @ModelAttribute("book") Book formBook, BindingResult bindingResult, @RequestParam("imageFile") MultipartFile imageFile, @RequestParam(value = "authorIds", required = false) List<Long> authorIds, @PathVariable("bookId") Long bookId, Model model) throws IOException {
+	public String editBook(@Valid @ModelAttribute("book") Book formBook, 
+						   BindingResult bindingResult, 
+						   @RequestParam("imageFile") MultipartFile imageFile, 
+						   @RequestParam(value = "authorIds", required = false) List<Long> authorIds, 
+						   @PathVariable("bookId") Long bookId, Model model) throws IOException {
 
+		// Se non è stato spuntato nulla delle checkbox
 		if (authorIds == null || authorIds.isEmpty()) {
 
 			model.addAttribute("authorError", "Book must have at least one author");
@@ -118,7 +130,7 @@ public class BookController {
 			model.addAttribute("book", formBook);
 			model.addAttribute("authors", this.authorService.getAllAuthors());
 			return "/admin/formEditBook.html";
-		} else {                         // NON sono emersi errori nel binding
+		} else { // NON sono emersi errori nel binding
 
 			Book existingBook = this.bookService.findById(bookId);
 			
@@ -132,7 +144,7 @@ public class BookController {
 			existingBook.setImage(image);
 
 
-
+			// Setto gli autori selezionati
 			Iterable<Author> authorsIterable = authorService.findAllById(authorIds);
 			Set<Author> authors = new HashSet<>();
 			authorsIterable.forEach(authors::add);
@@ -149,7 +161,7 @@ public class BookController {
 
 	}
 
-	//Get mapping del form per l'ineserimento di un libro
+	// Get mapping del form per l'ineserimento di un libro
 	@GetMapping("/admin/formNewBook")
 	public String formNewBook(Model model) {
 		model.addAttribute("book", new Book());
@@ -157,17 +169,22 @@ public class BookController {
 		return "/admin/formNewBook.html";
 	}
 
-
+	// Post mapping per la cancellazione di un libro
 	@PostMapping("/admin/bookDelete/{bookId}")
 	public String bookDelete(@PathVariable("bookId") Long bookId) {
 		this.bookService.deleteById(bookId);
 		return "redirect:/admin/manageBooks";
 	}
 
-	//Post mapping per l'inserimento di un libro
+	// Post mapping per l'inserimento di un libro
 	@PostMapping("/admin/addBook")
-	public String addBook(@Valid @ModelAttribute("book") Book book, BindingResult bindingResult, @RequestParam("imageFile") MultipartFile imageFile, @RequestParam(value = "authorIds", required = false) List<Long> authorIds, Model model) throws IOException {
+	public String addBook(@Valid @ModelAttribute("book") Book book, 
+						  BindingResult bindingResult, 
+						  @RequestParam("imageFile") MultipartFile imageFile, 
+						  @RequestParam(value = "authorIds", required = false) List<Long> authorIds, 
+						  Model model) throws IOException {
 
+		// Se non hai spuntato nessuna checkbox
 		if (authorIds == null || authorIds.isEmpty()) {
 
 			model.addAttribute("authorError", "Book must have at least one author");
@@ -176,8 +193,11 @@ public class BookController {
 			model.addAttribute("imageError", "Book must have an image");
 		}
 
-
-		if (bindingResult.hasErrors() || model.containsAttribute("authorError") || model.containsAttribute("imageError")) { // sono emersi errori nel binding
+		if(bookService.existsByTitle(book.getTitle())) {
+			model.addAttribute("existingBook", "This book already exists");
+		}
+		
+		if (bindingResult.hasErrors() || model.containsAttribute("authorError") || model.containsAttribute("imageError") || model.containsAttribute("existingBook")) { // sono emersi errori nel binding
 			// Sennò gli autori non si vedrebbero
 			model.addAttribute("authors", this.authorService.getAllAuthors());
 			return "/admin/formNewBook.html";
@@ -190,7 +210,7 @@ public class BookController {
 			book.setImage(image);
 
 
-
+			// Setto gli autori selezionati
 			Iterable<Author> authorsIterable = authorService.findAllById(authorIds);
 			Set<Author> authors = new HashSet<>();
 			authorsIterable.forEach(authors::add);
@@ -207,14 +227,18 @@ public class BookController {
 
 	}
 
-	//Post mapping per l'inserimento di una review
+	// Post mapping per l'inserimento di una review
 	@PostMapping("/book/{bookId}/addReview")
-	public String addReview(@Valid @ModelAttribute("review") Review review, BindingResult bindingResult, @ModelAttribute("currentUser") User user, @PathVariable("bookId") Long bookId ,Model model) throws IOException {
+	public String addReview(@Valid @ModelAttribute("review") Review review, 
+							BindingResult bindingResult, 
+							@ModelAttribute("currentUser") User user, 
+							@PathVariable("bookId") Long bookId ,Model model) throws IOException {
 
-		if (bindingResult.hasErrors()) { // sono emersi errori nel binding
+		// Sono emersi errori nel binding, ritorno alla pagina del libro con il modal della recensione
+		if (bindingResult.hasErrors()) { 
 			model.addAttribute("book", bookService.findById(bookId));
 			return "book.html";
-		} else {                         // NON sono emersi errori nel binding
+		} else {  // NON sono emersi errori nel binding
 
 			// Salva la review
 			Book book = bookService.findById(bookId);

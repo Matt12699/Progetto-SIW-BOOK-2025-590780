@@ -14,32 +14,38 @@ public class BookService {
 	@Autowired
 	private BookRepository bookRepository;
 	
+	// Trova tutti i libri
 	public Iterable<Book> getAllBooks(){
 		return bookRepository.findAll();
 	}
 	
+	// Salva il libro
 	public Book save(Book book) {
 		return bookRepository.save(book);
 	}
 	
+	// Trova il libro dato l'id
 	public Book findById(Long id) {
 		return bookRepository.findById(id).get();
 	}
 	
-	public void addAuthorToBook(Long bookId, Long authorId) {
-		bookRepository.addAuthorToBook(bookId, authorId);
-	}
-	
+	// Trova il libro che contiene la parola chiave nel titolo
 	public List<Book> findByTitleContaining(String keyword) {
 		return bookRepository.findByTitleContaining(keyword);
 	}
 	
+	// Conta il numero di libri
 	public Long countBooks() {
 		return bookRepository.count();
 	}
 	
+	// Cancella il libro dato l'id
 	public void deleteById(Long bookId) {
 		bookRepository.deleteById(bookId);
 	}
 	
+	// Controlla se esiste un libro con quel titolo
+	public boolean existsByTitle(String title) {
+		return this.bookRepository.existsByTitle(title);
+	}
 }

@@ -55,7 +55,7 @@
 
 					<!-- Admin Area -->
 					<li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
-						<a class="nav-link active" aria-current="page" href="/admin/manageBooks">Manage Books</a>
+						<a class="nav-link" aria-current="page" href="/admin/manageBooks">Manage Books</a>
 					</li>
 					<li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
 						<a class="nav-link" href="/admin/manageAuthors">Manage Authors</a>
@@ -68,7 +68,7 @@
 
 					<!-- User Area -->
 					<li class="nav-item user-area" sec:authorize="!hasAuthority('ADMIN') && isAuthenticated()">
-						<a class="nav-link" href="/userArea">
+						<a class="nav-link active" href="/userArea">
 							<i class="fa fa-user user-icon"></i>
 							User Area
 						</a>
@@ -96,7 +96,8 @@
 							<span th:text="${#strings.substring(currentUser.credentials.username, 0, 1)}">U</span>
 						</div>
 						<div class="welcome-text">
-							<h1>Welcome back, <span class="username">[[${currentUser.credentials.username}]]</span>!</h1>
+							<h1>Welcome back, <span class="username">[[${currentUser.credentials.username}]]</span>!
+							</h1>
 							<p class="welcome-subtitle">Your personal library awaits</p>
 						</div>
 					</div>
@@ -145,7 +146,6 @@
 					<div class="content-section">
 						<div class="section-header">
 							<h3><i class="fas fa-comments me-2"></i>Your Reviews</h3>
-							<span class="review-count" th:text="${currentUser.writtenReviews.size()}"></span>
 						</div>
 
 						<!-- No Reviews State -->
@@ -171,7 +171,7 @@
 									<div class="book-mini-info">
 										<h6 th:text="${review.book.title}">Book Title</h6>
 										<p class="book-authors" th:each="author, authorStat : ${review.book.authors}">
-											[[${author.name}]] [[${author.surname}]] 
+											[[${author.name}]] [[${author.surname}]]
 											<span th:if="${!authorStat.last}">,
 											</span>
 										</p>
@@ -268,8 +268,8 @@
 					<ul class="list-unstyled">
 						<li><a href="/books" class="footer-link">Books</a></li>
 						<li><a href="/authors" class="footer-link">Authors</a></li>
-						<li><a href="/userArea" class="footer-link" 
-													sec:authorize="!hasAuthority('ADMIN') && isAuthenticated()">User Area</a></li>
+						<li><a href="/userArea" class="footer-link"
+								sec:authorize="!hasAuthority('ADMIN') && isAuthenticated()">User Area</a></li>
 						<li><a href="/admin/manageBooks" class="footer-link"
 								sec:authorize="hasAuthority('ADMIN')">Manage Books</a></li>
 						<li><a href="/admin/manageAuthors" class="footer-link"

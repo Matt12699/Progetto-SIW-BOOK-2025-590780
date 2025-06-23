@@ -168,7 +168,7 @@
 }
 
 /* ==========================================
-STATS SECTION - DESIGN DOLCE
+		STATS SECTION 
 ========================================== */
 .stats {
   padding: 3rem 1.5rem;
@@ -182,7 +182,7 @@ STATS SECTION - DESIGN DOLCE
   overflow: hidden;
 }
 
-/* Effetto gradiente sottile per più dolcezza */
+
 .stats::before {
   content: '';
   position: absolute;

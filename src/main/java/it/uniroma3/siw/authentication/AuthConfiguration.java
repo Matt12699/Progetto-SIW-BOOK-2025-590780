@@ -50,7 +50,7 @@ import javax.sql.DataSource;
                 .csrf().and().cors().disable()
                 .authorizeHttpRequests()
 //                .requestMatchers("/**").permitAll()
-                // chiunque (autenticato o no) può accedere alle pagine index, login, register, ai css e alle immagini
+                // chiunque (autenticato o no) può accedere alle pagine index, login, register ecc...
                 .requestMatchers(HttpMethod.GET,"/","/register", "/login", "/css/**", "/images/**", "/books", "/authors/**", "/book/**", "/author/**", "/error/**").permitAll()
         		// chiunque (autenticato o no) può mandare richieste POST al punto di accesso per login e register 
                 .requestMatchers(HttpMethod.POST,"/register", "/login").permitAll()
@@ -77,9 +77,11 @@ import javax.sql.DataSource;
                 .clearAuthentication(true).permitAll()
                 .and()
                 .exceptionHandling()
+                //In caso di errore 401 si viene reindirizzati alla pagina di errore
                 .authenticationEntryPoint((request, response, authException) -> {
                     response.sendRedirect("/error"); 
                 })
+                //In caso di errore 404 si viene reindirizzati alla pagina di errore
                 .accessDeniedHandler((request, response, accessDeniedException) -> {
                     response.sendRedirect("/error"); 
                 });

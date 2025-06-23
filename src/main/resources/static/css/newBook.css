@@ -1,7 +1,7 @@
-/* CSS per la pagina newBook - Card integrate nel form-container */
+/* CSS per la pagina newBook */
 
 .form-container {
-    max-width: 700px; /* Allargato ulteriormente per ospitare card più larghe */
+    max-width: 700px; 
     margin: 0 auto;
     padding: 2rem;
     box-sizing: border-box;
@@ -20,8 +20,8 @@
 
 .books-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 colonne come richiesto */
-    gap: 2rem; /* Gap più ampio per card larghe */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 2rem; 
     justify-items: center;
     margin-top: 1.5rem;
     margin-bottom: 2rem;
@@ -38,7 +38,7 @@
     border: 2px solid rgba(212,175,55,0.2);
     transform-origin: center;
     width: 100%;
-    max-width: 450px; /* Molto più larghe - da 320px a 450px */
+    max-width: 450px; 
     cursor: pointer;
 }
 
@@ -57,7 +57,7 @@
 .book-cover-container {
     position: relative;
     overflow: hidden;
-    height: 140px; /* Leggermente più alto per proporzioni migliori con card larghe */
+    height: 140px; 
     background: linear-gradient(135deg, var(--parchment) 0%, var(--light-brown) 100%);
     display: flex;
     align-items: center;
@@ -185,7 +185,6 @@
     font-weight: 500;
 }
 
-/* Contenitore centralizzato per il bottone */
 .form-btn-container {
     display: flex;
     justify-content: center;
@@ -194,8 +193,8 @@
 }
 
 .form-btn {
-    display: inline-block; /* Cambiato da block a inline-block */
-    margin: 0; /* Rimosso margin auto */
+    display: inline-block; 
+    margin: 0;
     padding: 0.75rem 2rem;
     font-size: 1.1rem;
     cursor: pointer;
@@ -236,7 +235,7 @@
 /* Responsive Design */
 @media (max-width: 1024px) {
     .books-grid {
-        grid-template-columns: 1fr; /* Una colonna per tablet */
+        grid-template-columns: 1fr; 
         gap: 1.5rem;
     }
     
@@ -257,7 +256,7 @@
     }
     
     .books-grid {
-        grid-template-columns: 1fr; /* Una colonna per mobile */
+        grid-template-columns: 1fr; 
         gap: 1rem;
         max-width: 100%;
     }

@@ -382,105 +382,186 @@
 		</div>
 	</div>
 
+	<!-- Script per la visualizzazione del modal in caso di errori -->
 	<script th:if="${#fields.hasErrors('review.*')}">
 		document.addEventListener('DOMContentLoaded', function () {
-			// Apri automaticamente il modal se ci sono errori nella review
-			const reviewModal = document.getElementById('reviewModal');
-			if (reviewModal) {
-				reviewModal.style.display = 'flex';
-				document.body.style.overflow = 'hidden';
-				setTimeout(() => {
-					reviewModal.classList.add('show');
-				}, 10);
+		    // Funzione per resettare il rating
+		    function resetRating() {
+		        const starInputs = document.querySelectorAll('.star-rating input[type="radio"]');
+		        const ratingText = document.querySelector('.rating-text');
+		        
+		        // Deseleziona tutte le stelle
+		        starInputs.forEach(input => {
+		            input.checked = false;
+		        });
+		        
+		        // Reset del testo
+		        if (ratingText) {
+		            ratingText.textContent = 'Select a rating';
+		        }
+		    }
 
-				// Evidenzia il primo campo con errore
-				setTimeout(() => {
-					const firstErrorField = reviewModal.querySelector('.form-control.is-invalid, .error');
-					if (firstErrorField) {
-						firstErrorField.focus();
-						firstErrorField.scrollIntoView({behavior: 'smooth', block: 'center'});
-					}
-				}, 300);
-			}
+		    // Se ci sono errori, apri il modal e resetta il rating
+		    const hasErrors = document.querySelector('.error') !== null;
+		    if (hasErrors) {
+		        const reviewModal = document.getElementById('reviewModal');
+		        if (reviewModal) {
+		            // Resetta il rating prima di aprire il modal
+		            resetRating();
+		            
+		            reviewModal.style.display = 'flex';
+		            document.body.style.overflow = 'hidden';
+		            setTimeout(() => {
+		                reviewModal.classList.add('show');
+		            }, 10);
+
+		            // Evidenzia il primo campo con errore
+		            setTimeout(() => {
+		                const firstErrorField = reviewModal.querySelector('.form-control.is-invalid, .error');
+		                if (firstErrorField) {
+		                    firstErrorField.focus();
+		                    firstErrorField.scrollIntoView({behavior: 'smooth', block: 'center'});
+		                }
+		            }, 300);
+		        }
+		    }
 		});
 	</script>
 
+	<!-- Script per i contenuti del modal -->
 	<script>
 
 		document.addEventListener('DOMContentLoaded', function () {
-			const reviewModal = document.getElementById('reviewModal');
-			const openModalBtn = document.getElementById('openReviewModal');
-			const closeModalBtn = document.getElementById('closeReviewModal');
-			const cancelBtn = document.getElementById('cancelReview');
-			const charCountSpan = document.getElementById('charCount');
-			const reviewContent = document.getElementById('reviewDescription');
-			const ratingText = document.querySelector('.rating-text');
-			const starInputs = document.querySelectorAll('.star-rating input[type="radio"]');
+		    const reviewModal = document.getElementById('reviewModal');
+		    const openModalBtn = document.getElementById('openReviewModal');
+		    const closeModalBtn = document.getElementById('closeReviewModal');
+		    const cancelBtn = document.getElementById('cancelReview');
+		    const charCountSpan = document.getElementById('charCount');
+		    const reviewContent = document.getElementById('reviewDescription');
+		    const ratingText = document.querySelector('.rating-text');
+		    const starInputs = document.querySelectorAll('.star-rating input[type="radio"]');
 
-			// Apri modal
-			if (openModalBtn) {
-				openModalBtn.addEventListener('click', function (e) {
-					e.preventDefault();
-					reviewModal.style.display = 'flex';
-					document.body.style.overflow = 'hidden';
-					setTimeout(() => {
-						reviewModal.classList.add('show');
-					}, 10);
-				});
-			}
+		    // Funzione per resettare completamente il form
+		    function resetForm() {
+		        // Reset delle stelle
+		        starInputs.forEach(input => {
+		            input.checked = false;
+		        });
+		        
+		        // Reset del testo del rating
+		        if (ratingText) {
+		            ratingText.textContent = 'Select a rating';
+		        }
+		        
+		        // Reset dei campi del form 
+		        const form = document.getElementById('reviewForm');
+		        if (form) {
+		            const titleField = form.querySelector('#reviewTitle');
+		            const descriptionField = form.querySelector('#reviewDescription');
+		            
+		            if (titleField) titleField.value = '';
+		            if (descriptionField) {
+		                descriptionField.value = '';
+		                // Reset conteggio caratteri
+		                if (charCountSpan) {
+		                    charCountSpan.textContent = '0';
+		                    charCountSpan.style.color = 'var(--gray)';
+		                }
+		            }
+		        }
+		    }
 
-			// Chiudi modal
-			function closeModal() {
-				reviewModal.classList.remove('show');
-				setTimeout(() => {
-					reviewModal.style.display = 'none';
-					document.body.style.overflow = 'auto';
-				}, 300);
-			}
+		    // Apri modal
+		    if (openModalBtn) {
+		        openModalBtn.addEventListener('click', function (e) {
+		            e.preventDefault();
+		            
+		            // Reset del form quando si apre il modal normalmente
+		            resetForm();
+		            
+		            reviewModal.style.display = 'flex';
+		            document.body.style.overflow = 'hidden';
+		            setTimeout(() => {
+		                reviewModal.classList.add('show');
+		            }, 10);
+		        });
+		    }
 
-			closeModalBtn.addEventListener('click', closeModal);
-			cancelBtn.addEventListener('click', closeModal);
+		    // Chiudi modal
+		    function closeModal() {
+		        reviewModal.classList.remove('show');
+		        setTimeout(() => {
+		            reviewModal.style.display = 'none';
+		            document.body.style.overflow = 'auto';
+		        }, 300);
+		    }
 
-			// Chiudi cliccando fuori
-			reviewModal.addEventListener('click', function (e) {
-				if (e.target === reviewModal) {
-					closeModal();
-				}
-			});
+		    if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+		    if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
 
-			// Chiudi con ESC
-			document.addEventListener('keydown', function (e) {
-				if (e.key === 'Escape' && reviewModal.classList.contains('show')) {
-					closeModal();
-				}
-			});
+		    // Chiudi cliccando fuori
+		    reviewModal.addEventListener('click', function (e) {
+		        if (e.target === reviewModal) {
+		            closeModal();
+		        }
+		    });
 
-			// Conteggio caratteri
-			reviewContent.addEventListener('input', function () {
-				const count = this.value.length;
-				charCountSpan.textContent = count;
+		    // Chiudi con ESC
+		    document.addEventListener('keydown', function (e) {
+		        if (e.key === 'Escape' && reviewModal.classList.contains('show')) {
+		            closeModal();
+		        }
+		    });
 
-				if (count > 480) {
-					charCountSpan.style.color = 'var(--accent-gold)';
-				} else {
-					charCountSpan.style.color = 'var(--gray)';
-				}
-			});
+		    // Conteggio caratteri
+		    if (reviewContent && charCountSpan) {
+		        reviewContent.addEventListener('input', function () {
+		            const count = this.value.length;
+		            charCountSpan.textContent = count;
 
-			// Gestione rating stelle
-			starInputs.forEach(input => {
-				input.addEventListener('change', function () {
-					const rating = this.value;
-					const ratingTexts = {
-						'1': 'Poor',
-						'2': 'Fair',
-						'3': 'Good',
-						'4': 'Very Good',
-						'5': 'Excellent'
-					};
-					ratingText.textContent = ratingTexts[rating];
-				});
-			});
+		            if (count > 480) {
+		                charCountSpan.style.color = 'var(--accent-gold)';
+		            } else {
+		                charCountSpan.style.color = 'var(--gray)';
+		            }
+		        });
+		        
+		        // Inizializza il conteggio caratteri al caricamento
+		        const initialCount = reviewContent.value.length;
+		        charCountSpan.textContent = initialCount;
+		    }
+
+		    // Gestione rating stelle - MIGLIORATA
+		    starInputs.forEach(input => {
+		        input.addEventListener('change', function () {
+		            const rating = this.value;
+		            const ratingTexts = {
+		                '1': 'Poor',
+		                '2': 'Fair', 
+		                '3': 'Good',
+		                '4': 'Very Good',
+		                '5': 'Excellent'
+		            };
+		            
+		            if (ratingText) {
+		                ratingText.textContent = ratingTexts[rating] || 'Select a rating';
+		            }
+		        });
+		    });
+
+		    // Inizializza il testo del rating al caricamento della pagina
+		    const checkedStar = document.querySelector('.star-rating input[type="radio"]:checked');
+		    if (checkedStar && ratingText) {
+		        const rating = checkedStar.value;
+		        const ratingTexts = {
+		            '1': 'Poor',
+		            '2': 'Fair',
+		            '3': 'Good', 
+		            '4': 'Very Good',
+		            '5': 'Excellent'
+		        };
+		        ratingText.textContent = ratingTexts[rating] || 'Select a rating';
+		    }
 		});
 	</script>
 
