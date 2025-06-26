@@ -116,16 +116,8 @@ public class BookController {
 						   @RequestParam(value = "authorIds", required = false) List<Long> authorIds, 
 						   @PathVariable("bookId") Long bookId, Model model) throws IOException {
 
-		// Se non è stato spuntato nulla delle checkbox
-		if (authorIds == null || authorIds.isEmpty()) {
 
-			model.addAttribute("authorError", "Book must have at least one author");
-		}
-		if(imageFile.isEmpty()) {
-			model.addAttribute("imageError", "Book must have an image");
-		}
-
-		if (bindingResult.hasErrors() || model.containsAttribute("authorError") || model.containsAttribute("imageError")) { // sono emersi errori nel binding
+		if (bindingResult.hasErrors()) { // sono emersi errori nel binding
 			// Sennò gli autori non si vedrebbero
 			model.addAttribute("book", formBook);
 			model.addAttribute("authors", this.authorService.getAllAuthors());
@@ -139,16 +131,21 @@ public class BookController {
 	        existingBook.setYear(formBook.getYear());
 	        existingBook.setDescription(formBook.getDescription());
 
-			Image image = new Image();
-			image.setImage(imageFile.getBytes());
-			existingBook.setImage(image);
-
-
-			// Setto gli autori selezionati
-			Iterable<Author> authorsIterable = authorService.findAllById(authorIds);
-			Set<Author> authors = new HashSet<>();
-			authorsIterable.forEach(authors::add);
-			existingBook.setAuthors(authors);
+	        if(!imageFile.isEmpty()) {
+				Image image = new Image();
+				image.setImage(imageFile.getBytes());
+				existingBook.setImage(image);
+	        }
+	        
+	        if(authorIds!=null) {
+	        	
+	        	// Setto gli autori selezionati
+				Iterable<Author> authorsIterable = authorService.findAllById(authorIds);
+				Set<Author> authors = new HashSet<>();
+				authorsIterable.forEach(authors::add);
+				existingBook.setAuthors(authors);
+	        	
+	        }
 
 
 			// Salva il libro con autori e immagine

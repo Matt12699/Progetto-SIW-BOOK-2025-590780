@@ -121,11 +121,7 @@ public class AuthorController {
 							@RequestParam("imageFile") MultipartFile imageFile, 
 							@PathVariable("authorId") Long authorId, Model model) throws IOException {
 
-		if(imageFile.isEmpty()) {
-			model.addAttribute("imageError", "Author must have an image");
-		}
-
-		if (bindingResult.hasErrors() || model.containsAttribute("imageError")) { // sono emersi errori nel binding
+		if (bindingResult.hasErrors()) { // sono emersi errori nel binding
 			// Sennò gli autori non si vedrebbero
 			model.addAttribute("author", formAuthor);
 			return "/admin/formEditAuthor.html";
@@ -140,10 +136,11 @@ public class AuthorController {
 			existingAuthor.setDateOfDeath(formAuthor.getDateOfDeath());
 			existingAuthor.setNationality(formAuthor.getNationality());
 
+			if(!imageFile.isEmpty()) {
 			Image image = new Image();
 			image.setImage(imageFile.getBytes());
 			existingAuthor.setImage(image);
-
+			}
 
 			authorService.save(existingAuthor);
 

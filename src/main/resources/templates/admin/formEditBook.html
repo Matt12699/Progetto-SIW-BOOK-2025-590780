@@ -153,7 +153,6 @@
 			<div class="form-group mb-3">
 				<label for="imageInput" class="form-label">Image</label>
 				<input type="file" class="form-control custom-input" id="imageInput" name="imageFile" />
-				<div class="error" th:if="${imageError}" th:text="${imageError}"></div>
 			</div>
 
 			<!--Authors Section-->
@@ -215,7 +214,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="error" th:if="${authorError}" th:text="${authorError}"></div>
+			
 			<div class="form-btn-container">
 				<button type="submit" class="form-btn">Edit Book</button>
 			</div>

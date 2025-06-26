@@ -383,6 +383,22 @@
 }
 
 /* ==========================================
+   	LISTA LIBRI 
+   ========================================== */
+	
+   .books-list {
+       display: flex;
+       align-items: center;
+       gap: 2.5rem;
+       margin-bottom: 2.5rem;
+       flex-wrap: wrap;
+       padding: 1.5rem;
+       background: rgba(255, 255, 255, 0.8);
+       border-radius: 16px;
+       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+   }
+
+/* ==========================================
    	MODAL RECENSIONE 
    ========================================== */
 
