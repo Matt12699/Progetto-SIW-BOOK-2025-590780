@@ -200,10 +200,12 @@
 										<span class="info-label">Date of birth:</span>
 										<span class="info-value">[[${author.dateOfBirth}]]</span>
 									</div>
+									<span th:if="${author.dateOfDeath!=null}">
 									<div class="info-row">
 										<span class="info-label">Date of death:</span>
 										<span class="info-value">[[${author.dateOfDeath}]]</span>
 									</div>
+									</span>
 								</div>
 							</div>
 						</div>
